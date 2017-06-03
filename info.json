@@ -4,8 +4,8 @@
   "factorio_version": "0.15",
   "title": "Highspeedtrain",
   "author": "J3n50m4t",
-  "contact": "j3n50m4t@j3n50m4t.com",
-  "homepage": "j3n50m4t.com",
+  "contact": "GitHub",
+  "homepage": "https://github.com/J3n50m4t/HighSpeedTrain",
   "description": "Adds extremly fast Train and Cargo-wagon.",
   "dependencies": ["base >= 0.15.0"]
 }
