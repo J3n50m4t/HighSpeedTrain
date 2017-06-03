@@ -1,0 +1,17 @@
+{
+  "entity":
+  [
+    ["highspeed-diesel-locomotive", "highspeed-locomotive"],
+    ["highspeed-diesel-locomotive", "highspeed-locomotiveMK2"],
+    ["highspeed-diesel-locomotive", "highspeed-locomotiveMK3"],
+    ["highspeed-cargo-wagon", "highspeed-cargo-wagon"]
+    
+  ],
+  "item":
+  [
+    ["highspeed-diesel-locomotive", "highspeed-locomotive"],
+    ["highspeed-diesel-locomotive", "highspeed-locomotiveMK2"],
+    ["highspeed-diesel-locomotive", "highspeed-locomotiveMK3"],
+    ["highspeed-cargo-wagon", "highspeed-cargo-wagon"]
+  ]
+}
