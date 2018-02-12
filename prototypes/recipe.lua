@@ -30,9 +30,21 @@ highspeed_wago.ingredients = {
 }
 highspeed_wago.enabled = false
 
+local highspeed_fluid = copyPrototype("recipe", "fluid-wagon", "highspeed-fluid-wagon")
+highspeed_fluid.category = "crafting-with-fluid"
+highspeed_fluid.ingredients={
+  {"fluid-wagon", 1},
+  {"processing-unit", 20},
+  {"speed-module", 10},
+  {type="fluid", name="lubricant", amount=100},
+}
+highspeed_fluid.enabled = false
+
+
 data:extend({
   highspeed_loco,
   highspeed_locomk2,
   highspeed_locomk3,
-  highspeed_wago
+  highspeed_wago,
+  highspeed_fluid
 })

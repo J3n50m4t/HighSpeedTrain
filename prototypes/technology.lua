@@ -112,5 +112,30 @@ data:extend({
       time = 30
     },
     order = "c-g-c"
+  },
+  {
+    type = "technology",
+    name = "highspeedfluid",
+    icon = "__base__/graphics/technology/railway.png",
+    icon_size = "128",
+    prerequisites = {"highspeedtrain"},
+    effects =
+    {
+      {
+        type = "unlock-recipe",
+        recipe = "highspeed-fluid-wagon"
+      }
+    },
+    unit =
+    {
+      count = 200,
+      ingredients = {
+        {"science-pack-3", 2},
+        {"production-science-pack", 2},
+        {"high-tech-science-pack", 2},
+      },
+      time = 30
+    },
+    order = "c-g-c"
   }
 })

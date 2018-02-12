@@ -48,9 +48,19 @@ highspeed_cargo.icon = "__base__/graphics/icons/cargo-wagon.png"
 highspeed_cargo.inventory_size = 60;
 highspeed_cargo.max_health = 800
 
+local highspeed_fluid = copyPrototype("fluid-wagon", "fluid-wagon", "highspeed-fluid-wagon")
+highspeed_fluid.total_capacity = 37000 * 3
+highspeed_fluid.weight = 2500
+highspeed_fluid.max_speed = 10
+highspeed_fluid.braking_force = 50
+highspeed_fluid.icon = "__base__/graphics/icons/fluid-wagon.png";
+highspeed_cargo.max_health = 800
+
+
 data:extend({
   highspeed_loco,
   highspeed_locomk2,
   highspeed_locomk3,
-  highspeed_cargo
+  highspeed_cargo,
+  highspeed_fluid
 })
