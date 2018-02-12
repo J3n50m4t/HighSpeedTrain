@@ -1,4 +1,8 @@
-0.1.1
+0.3.0
+- added Fluid by /u/Ostrei
+- fixed crash on Attack
+- updated to gameversion 0.16 
+0.2.0
 - added MK2 and MK3 Locomotive
 0.1.0
 - initial release MK1 + wagon
