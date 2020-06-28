@@ -7,3 +7,5 @@ Adds 3 faster Trains and a cargo wagon.
 * Wagon: Inventory Size 60 and Maxspeed
 * ![Mk3 Train](http://i.imgur.com/oDshfnr.png)
 * Fluid by [/u/Ostrei](https://www.reddit.com/user/Ostrei)
+
+Please open issues at Github, so I get notified

@@ -1,5 +1,5 @@
 local highspeed_loco = copyPrototype("locomotive", "locomotive", "highspeed-locomotive")
-highspeed_loco.icon = "__base__/graphics/icons/diesel-locomotive.png"
+highspeed_loco.icon = "__base__/graphics/icons/locomotive.png"
 highspeed_loco.color = {r = 0.10, g = 0.19, b = 0.80, a = 0.5}
 highspeed_loco.weight = 1000
 highspeed_loco.max_speed = 4 --860.km/h
@@ -14,7 +14,7 @@ highspeed_loco.max_health = 800
 
 
 local highspeed_locomk2 = copyPrototype("locomotive", "locomotive", "highspeed-locomotiveMK2")
-highspeed_locomk2.icon = "__base__/graphics/icons/diesel-locomotive.png"
+highspeed_locomk2.icon = "__base__/graphics/icons/locomotive.png"
 highspeed_locomk2.color = {r = 0.10, g = 0.19, b = 0.80, a = 0.5}
 highspeed_locomk2.weight = 1000
 highspeed_locomk2.max_speed = 5 --860.km/h
@@ -28,7 +28,7 @@ highspeed_locomk2.burner.fuel_inventory_size = 8
 highspeed_locomk2.max_health = 800
 
 local highspeed_locomk3 = copyPrototype("locomotive", "locomotive", "highspeed-locomotiveMK3")
-highspeed_locomk3.icon = "__base__/graphics/icons/diesel-locomotive.png"
+highspeed_locomk3.icon = "__base__/graphics/icons/locomotive.png"
 highspeed_locomk3.color = {r = 0.10, g = 0.19, b = 0.80, a = 0.5}
 highspeed_locomk3.weight = 1000
 highspeed_locomk3.max_speed = 7 --860.km/h

@@ -65,7 +65,6 @@ data:extend({
     prerequisites = {"highspeedtrainmk2"},
     effects =
     {
-     
       {
         type = "unlock-recipe",
         recipe = "highspeed-locomotiveMK3"
