@@ -6,7 +6,7 @@
 * Mk2: 5 Times faster  @ 63% effectivity
 * Mk3: 7 Times faster  @ 50% effectivity
 * Wagon: Inventory Size 60 and Maxspeed
-* Fluied Wagon
+* Fluid Wagon
 
 ![Mk3 Train](http://i.imgur.com/oDshfnr.png)
 
