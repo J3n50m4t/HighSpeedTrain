@@ -22,6 +22,14 @@ highspeed_locomk3.ingredients = {
 }
 highspeed_locomk3.enabled = false
 
+local highspeed_locomk4 = copyPrototype("recipe", "locomotive", "highspeed-locomotiveMK4")
+highspeed_locomk4.ingredients = {
+  {"highspeed-locomotiveMK3", 2},
+  {"processing-unit", 250},
+  {"speed-module-3", 100}
+}
+highspeed_locomk4.enabled = false
+
 local highspeed_wago = copyPrototype("recipe", "cargo-wagon", "highspeed-cargo-wagon")
 highspeed_wago.ingredients = {
   {"cargo-wagon", 1},
@@ -45,6 +53,7 @@ data:extend({
   highspeed_loco,
   highspeed_locomk2,
   highspeed_locomk3,
+  highspeed_locomk4,
   highspeed_wago,
   highspeed_fluid
 })

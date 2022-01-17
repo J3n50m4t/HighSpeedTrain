@@ -4,6 +4,7 @@
     ["highspeed-diesel-locomotive", "highspeed-locomotive"],
     ["highspeed-diesel-locomotive", "highspeed-locomotiveMK2"],
     ["highspeed-diesel-locomotive", "highspeed-locomotiveMK3"],
+    ["highspeed-diesel-locomotive", "highspeed-locomotiveMK4"],
     ["highspeed-cargo-wagon", "highspeed-cargo-wagon"]
     
   ],
@@ -12,6 +13,7 @@
     ["highspeed-diesel-locomotive", "highspeed-locomotive"],
     ["highspeed-diesel-locomotive", "highspeed-locomotiveMK2"],
     ["highspeed-diesel-locomotive", "highspeed-locomotiveMK3"],
+    ["highspeed-diesel-locomotive", "highspeed-locomotiveMK4"],
     ["highspeed-cargo-wagon", "highspeed-cargo-wagon"]
   ]
 }

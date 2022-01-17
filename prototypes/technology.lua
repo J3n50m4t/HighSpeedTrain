@@ -57,7 +57,7 @@ data:extend({
     order = "c-g-c"
   },
 
-{
+  {
     type = "technology",
     name = "highspeedtrainmk3",
     icon = "__base__/graphics/technology/railway.png",
@@ -83,6 +83,36 @@ data:extend({
         {"space-science-pack", 2}
       },
       time = 60
+    },
+    order = "c-g-c"
+  },
+
+  {
+    type = "technology",
+    name = "highspeedtrainmk4",
+    icon = "__base__/graphics/technology/railway.png",
+    icon_size = "128",
+    prerequisites = {"highspeedtrainmk3"},
+    effects =
+    {
+      {
+        type = "unlock-recipe",
+        recipe = "highspeed-locomotiveMK4"
+      }
+    },
+    unit =
+    {
+      count = 200,
+      ingredients = {
+        {"automation-science-pack", 20},
+        {"logistic-science-pack", 20},
+        {"chemical-science-pack", 20},
+        {"military-science-pack", 20},        
+        {"production-science-pack", 20},
+        {"utility-science-pack", 20},
+        {"space-science-pack", 20}
+      },
+      time = 100
     },
     order = "c-g-c"
   },

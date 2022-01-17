@@ -41,11 +41,25 @@ highspeed_locomk3.burner.effectivity = 0.5
 highspeed_locomk3.burner.fuel_inventory_size = 12
 highspeed_locomk3.max_health = 800
 
+local highspeed_locomk4 = copyPrototype("locomotive", "locomotive", "highspeed-locomotiveMK4")
+highspeed_locomk4.icon = "__base__/graphics/icons/locomotive.png"
+highspeed_locomk4.color = {r = 0.10, g = 0.19, b = 0.80, a = 0.5}
+highspeed_locomk4.weight = 1000
+highspeed_locomk4.max_speed = 50
+highspeed_locomk4.max_power = "7000kW"
+highspeed_locomk4.reversing_power_modifier = 0.5 --no effect on automatic trains
+highspeed_locomk4.braking_force = 250
+highspeed_locomk4.friction_force = 1
+highspeed_locomk4.air_resistance = 0.0005
+highspeed_locomk4.burner.effectivity = 0.2
+highspeed_locomk4.burner.fuel_inventory_size = 36
+highspeed_locomk4.max_health = 800
+
 local highspeed_cargo = copyPrototype("cargo-wagon", "cargo-wagon", "highspeed-cargo-wagon")
 highspeed_cargo.max_speed = 10
 highspeed_cargo.braking_force = 50
 highspeed_cargo.icon = "__base__/graphics/icons/cargo-wagon.png"
-highspeed_cargo.inventory_size = 60;
+highspeed_cargo.inventory_size = 100;
 highspeed_cargo.max_health = 800
 
 local highspeed_fluid = copyPrototype("fluid-wagon", "fluid-wagon", "highspeed-fluid-wagon")
@@ -61,6 +75,7 @@ data:extend({
   highspeed_loco,
   highspeed_locomk2,
   highspeed_locomk3,
+  highspeed_locomk4,
   highspeed_cargo,
   highspeed_fluid
 })
