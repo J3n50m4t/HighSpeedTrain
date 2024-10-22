@@ -1,51 +1,53 @@
 local highspeed_loco = copyPrototype("recipe", "locomotive", "highspeed-locomotive")
 highspeed_loco.ingredients = {
-  {"locomotive", 1},
-  {"processing-unit", 20},
-  {"speed-module", 10}
+  {type = "item", name = "highspeed-locomotive", amount = 1},
+  {type = "item", name = "processing-unit", amount = 20},
+  {type = "item", name = "speed-module", amount = 10}
 }
 highspeed_loco.enabled = false
 
 local highspeed_locomk2 = copyPrototype("recipe", "locomotive", "highspeed-locomotiveMK2")
 highspeed_locomk2.ingredients = {
-  {"highspeed-locomotive", 1},
-  {"processing-unit", 20},
-  {"speed-module-2", 10}
+  {type = "item", name = "highspeed-locomotive", amount = 1},
+  {type = "item", name = "processing-unit", amount = 20},
+  {type = "item", name = "speed-module-2", amount = 10}
 }
+
 highspeed_locomk2.enabled = false
 
 local highspeed_locomk3 = copyPrototype("recipe", "locomotive", "highspeed-locomotiveMK3")
 highspeed_locomk3.ingredients = {
-  {"highspeed-locomotiveMK2", 1},
-  {"processing-unit", 20},
-  {"speed-module-3", 10}
+  {type = "item", name = "highspeed-locomotiveMK2", amount = 1},
+  {type = "item", name = "processing-unit", amount = 20},
+  {type = "item", name = "speed-module-2", amount = 10}
 }
 highspeed_locomk3.enabled = false
 
 local highspeed_locomk4 = copyPrototype("recipe", "locomotive", "highspeed-locomotiveMK4")
 highspeed_locomk4.ingredients = {
-  {"highspeed-locomotiveMK3", 2},
-  {"processing-unit", 250},
-  {"speed-module-3", 100}
+  {type = "item", name = "highspeed-locomotiveMK3", amount = 3},
+  {type = "item", name = "processing-unit", amount = 250},
+  {type = "item", name = "speed-module-3", amount = 10}
 }
 highspeed_locomk4.enabled = false
 
 local highspeed_wago = copyPrototype("recipe", "cargo-wagon", "highspeed-cargo-wagon")
 highspeed_wago.ingredients = {
-  {"cargo-wagon", 1},
-  {"processing-unit", 20},
-  {"speed-module", 10}
+  {type = "item", name = "cargo-wagon", amount = 3},
+  {type = "item", name = "processing-unit", amount = 20},
+  {type = "item", name = "speed-module", amount = 10},
 }
 highspeed_wago.enabled = false
 
 local highspeed_fluid = copyPrototype("recipe", "fluid-wagon", "highspeed-fluid-wagon")
 highspeed_fluid.category = "crafting-with-fluid"
-highspeed_fluid.ingredients={
-  {"fluid-wagon", 1},
-  {"processing-unit", 20},
-  {"speed-module", 10},
-  {type="fluid", name="lubricant", amount=100},
+highspeed_fluid.ingredients = {
+  {type = "item", name = "fluid-wagon", amount = 1},
+  {type = "item", name = "processing-unit", amount = 20},
+  {type = "item", name = "speed-module", amount = 10},
+  {type = "fluid", name = "lubricant", amount = 100}
 }
+
 highspeed_fluid.enabled = false
 
 

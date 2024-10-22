@@ -3,7 +3,7 @@ data:extend({
     type = "technology",
     name = "highspeedtrain",
     icon = "__base__/graphics/technology/railway.png",
-    icon_size = "128",
+    icon_size = 128,
     prerequisites = {"braking-force-2"},
     effects =
     {
@@ -31,7 +31,7 @@ data:extend({
     type = "technology",
     name = "highspeedtrainmk2",
     icon = "__base__/graphics/technology/railway.png",
-    icon_size = "128",
+    icon_size = 128,
     prerequisites = {"highspeedtrain"},
     effects =
     {
@@ -61,7 +61,7 @@ data:extend({
     type = "technology",
     name = "highspeedtrainmk3",
     icon = "__base__/graphics/technology/railway.png",
-    icon_size = "128",
+    icon_size = 128,
     prerequisites = {"highspeedtrainmk2"},
     effects =
     {
@@ -91,7 +91,7 @@ data:extend({
     type = "technology",
     name = "highspeedtrainmk4",
     icon = "__base__/graphics/technology/railway.png",
-    icon_size = "128",
+    icon_size = 128,
     prerequisites = {"highspeedtrainmk3"},
     effects =
     {
@@ -121,7 +121,7 @@ data:extend({
     type = "technology",
     name = "highspeedcarwo",
     icon = "__base__/graphics/technology/railway.png",
-    icon_size = "128",
+    icon_size = 128,
     prerequisites = {"highspeedtrain"},
     effects =
     {
@@ -146,7 +146,7 @@ data:extend({
     type = "technology",
     name = "highspeedfluid",
     icon = "__base__/graphics/technology/railway.png",
-    icon_size = "128",
+    icon_size = 128,
     prerequisites = {"highspeedtrain"},
     effects =
     {

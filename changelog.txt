@@ -1,3 +1,6 @@
+1.0.0
+- Factorio 2.0 support
+
 0.6.0
 - fixed cargo size
 - added mk4
