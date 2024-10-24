@@ -1,3 +1,5 @@
+1.0.1
+Fixed issue #3 "Recipe requires itself"
 1.0.0
 - Factorio 2.0 support
 
