@@ -1,6 +1,6 @@
 local highspeed_loco = copyPrototype("recipe", "locomotive", "highspeed-locomotive")
 highspeed_loco.ingredients = {
-  {type = "item", name = "highspeed-locomotive", amount = 1},
+  {type = "item", name = "locomotive", amount = 1},
   {type = "item", name = "processing-unit", amount = 20},
   {type = "item", name = "speed-module", amount = 10}
 }
