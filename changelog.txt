@@ -1,14 +1,14 @@
 ---------------------------------------------------------------------------------------------------
 Version: 2.0.0
-  Changes:
-    - Fixing Typos
-  Features: 
+  Features:
     - Adding Fluid Wagon Mk2
     - Adding Cargo Wagon Mk2
+  Bugfixes:
+    - Fixing Typos
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.1
   Bugfixes:
-    - Fixed issue #3 "Recipe requires itself"
+    - Fixed issue #3 - Recipe requires itself
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.0
   Major Features:
