@@ -22,7 +22,7 @@ for i, force in pairs(game.forces) do
   else
     force.recipes["highspeed-locomotiveMK4"].enabled = false
   end
-  if force.technologies["highspeedcarwo"].researched then
+  if force.technologies["highspeedcargo"].researched then
     force.recipes["highspeed-cargo-wagon"].enabled = true
   else
     force.recipes["highspeed-cargo-wagon"].enabled = false

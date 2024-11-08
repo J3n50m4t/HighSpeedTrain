@@ -19,9 +19,17 @@ local highspeed_cargo = copyPrototype("item-with-entity-data", "cargo-wagon", "h
 highspeed_cargo.icon = "__base__/graphics/icons/cargo-wagon.png"
 highspeed_cargo.order = "a[train-system]-f[highspeed-wagon]"
 
+local highspeed_cargomk2 = copyPrototype("item-with-entity-data", "cargo-wagon", "highspeed-cargo-wagonMK2")
+highspeed_cargomk2.icon = "__base__/graphics/icons/cargo-wagon.png"
+highspeed_cargomk2.order = "a[train-system]-f[highspeed-wagon]"
+
 local highspeed_fluid = copyPrototype("item-with-entity-data", "fluid-wagon", "highspeed-fluid-wagon")
 highspeed_fluid.icon = "__base__/graphics/icons/fluid-wagon.png"
 highspeed_fluid.order = "a[train-system]-f[highspeed-cluid-wagon]"
+
+local highspeed_fluidmk2 = copyPrototype("item-with-entity-data", "fluid-wagon", "highspeed-fluid-wagonMK2")
+highspeed_fluidmk2.icon = "__base__/graphics/icons/fluid-wagon.png"
+highspeed_fluidmk2.order = "a[train-system]-f[highspeed-cluid-wagon]"
 
 
 data:extend({
@@ -30,5 +38,7 @@ data:extend({
   highspeed_locomk3,
   highspeed_locomk4,
   highspeed_cargo,
-  highspeed_fluid
+  highspeed_cargomk2,
+  highspeed_fluid,
+  highspeed_fluidmk2
 })

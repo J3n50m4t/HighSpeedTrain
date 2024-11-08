@@ -1,19 +1,15 @@
-1.0.0
-- Factorio 2.0 support
-
-0.6.0
-- fixed cargo size
-- added mk4
-0.5.1
-- added support for 1.1
-0.4.0
-- added support for 0.17
-- science pack renaming
-0.3.0
-- added Fluid by /u/Ostrei
-- fixed crash on Attack
-- updated to gameversion 0.16 
-0.2.0
-- added MK2 and MK3 Locomotive
-0.1.0
-- initial release MK1 + wagon
+---------------------------------------------------------------------------------------------------
+Version: 2.0.0
+  Changes:
+    - Fixing Typos
+  Features: 
+    - Adding Fluid Wagon Mk2
+    - Adding Cargo Wagon Mk2
+---------------------------------------------------------------------------------------------------
+Version: 1.0.1
+  Bugfixes:
+    - Fixed issue #3 "Recipe requires itself"
+---------------------------------------------------------------------------------------------------
+Version: 1.0.0
+  Major Features:
+    - Factorio 2.0 support

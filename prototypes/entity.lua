@@ -58,6 +58,13 @@ highspeed_cargo.icon = "__base__/graphics/icons/cargo-wagon.png"
 highspeed_cargo.inventory_size = 100;
 highspeed_cargo.max_health = 800
 
+local highspeed_cargomk2 = copyPrototype("cargo-wagon", "cargo-wagon", "highspeed-cargo-wagonMK2")
+highspeed_cargomk2.max_speed = 50
+highspeed_cargomk2.braking_force = 250
+highspeed_cargomk2.icon = "__base__/graphics/icons/cargo-wagon.png"
+highspeed_cargomk2.inventory_size = 100;
+highspeed_cargomk2.max_health = 800
+
 local highspeed_fluid = copyPrototype("fluid-wagon", "fluid-wagon", "highspeed-fluid-wagon")
 highspeed_fluid.total_capacity = 37000 * 3
 highspeed_fluid.weight = 2500
@@ -66,13 +73,13 @@ highspeed_fluid.braking_force = 50
 highspeed_fluid.icon = "__base__/graphics/icons/fluid-wagon.png";
 highspeed_fluid.max_health = 800
 
-
-
-data:extend({
-  highspeed_loco,
-  highspeed_locomk2,
-  highspeed_locomk3,
-highspeed_cargo.max_health = 800
+local highspeed_fluidMK2 = copyPrototype("fluid-wagon", "fluid-wagon", "highspeed-fluid-wagonMK2")
+highspeed_fluidMK2.total_capacity = 37000 * 3
+highspeed_fluidMK2.weight = 2500
+highspeed_fluidMK2.max_speed = 50
+highspeed_fluidMK2.braking_force = 250
+highspeed_fluidMK2.icon = "__base__/graphics/icons/fluid-wagon.png";
+highspeed_fluidMK2.max_health = 800
 
 
 data:extend({
@@ -81,5 +88,7 @@ data:extend({
   highspeed_locomk3,
   highspeed_locomk4,
   highspeed_cargo,
-  highspeed_fluid
+  highspeed_cargomk2,
+  highspeed_fluid,
+  highspeed_fluidMK2
 })

@@ -119,7 +119,7 @@ data:extend({
 
   {
     type = "technology",
-    name = "highspeedcarwo",
+    name = "highspeedcargo",
     icon = "__base__/graphics/technology/railway.png",
     icon_size = 128,
     prerequisites = {"highspeedtrain"},
@@ -142,6 +142,36 @@ data:extend({
     },
     order = "c-g-c"
   },
+{
+  type = "technology",
+  name = "highspeedcargomk2",
+  icon = "__base__/graphics/technology/railway.png",
+  icon_size = 128,
+  prerequisites = {"highspeedcargo"},
+  effects =
+  {
+    {
+      type = "unlock-recipe",
+      recipe = "highspeed-cargo-wagonMK2"
+    }
+  },
+  unit =
+  {
+    count = 200,
+    ingredients = {
+      {"automation-science-pack", 20},
+      {"logistic-science-pack", 20},
+      {"chemical-science-pack", 20},
+      {"military-science-pack", 20},        
+      {"production-science-pack", 20},
+      {"utility-science-pack", 20},
+      {"space-science-pack", 20}
+    },
+    time = 30
+  },
+  order = "c-g-c"
+},
+
   {
     type = "technology",
     name = "highspeedfluid",
@@ -166,5 +196,36 @@ data:extend({
       time = 30
     },
     order = "c-g-c"
+  },
+
+  {
+    type = "technology",
+    name = "highspeedfluidmk2",
+    icon = "__base__/graphics/technology/railway.png",
+    icon_size = 128,
+    prerequisites = {"highspeedfluid"},
+    effects =
+    {
+      {
+        type = "unlock-recipe",
+        recipe = "highspeed-fluid-wagonMK2"
+      }
+    },
+    unit =
+    {
+      count = 200,
+      ingredients = {
+        {"automation-science-pack", 20},
+        {"logistic-science-pack", 20},
+        {"chemical-science-pack", 20},
+        {"military-science-pack", 20},        
+        {"production-science-pack", 20},
+        {"utility-science-pack", 20},
+        {"space-science-pack", 20}
+      },
+      time = 30
+    },
+    order = "c-g-c"
   }
+
 })
