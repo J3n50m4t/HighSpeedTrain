@@ -1,11 +1,13 @@
 {
   "name": "HighSpeedTrain",
-  "version": "2.0.0",
+  "version": "0.6.1",
   "factorio_version": "2.0",
   "title": "Highspeedtrain",
   "author": "J3n50m4t and Ostrei",
   "contact": "GitHub",
   "homepage": "https://github.com/J3n50m4t/HighSpeedTrain",
   "description": "Adds extremly fast Trains and Wagons.",
-  "dependencies": ["base >= 0.15.0"]
+  "dependencies": [
+    "base >= 0.15.0"
+  ]
 }
