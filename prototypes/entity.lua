@@ -1,3 +1,11 @@
+local no_fuel = settings.startup["highspeedtrain-no-fuel"] and settings.startup["highspeedtrain-no-fuel"].value
+
+local function apply_energy_source(prototype)
+  if no_fuel then
+    prototype.energy_source = { type = "void" }
+  end
+end
+
 local highspeed_loco = copyPrototype("locomotive", "locomotive", "highspeed-locomotive")
 highspeed_loco.icon = "__base__/graphics/icons/locomotive.png"
 highspeed_loco.icon_size = 32
@@ -10,6 +18,7 @@ highspeed_loco.braking_force = 90
 highspeed_loco.friction_force = 1
 highspeed_loco.air_resistance = 0.0005
 highspeed_loco.max_health = 800
+apply_energy_source(highspeed_loco)
 
 
 local highspeed_locomk2 = copyPrototype("locomotive", "locomotive", "highspeed-locomotiveMK2")
@@ -24,6 +33,7 @@ highspeed_locomk2.braking_force = 110
 highspeed_locomk2.friction_force = 1
 highspeed_locomk2.air_resistance = 0.0005
 highspeed_locomk2.max_health = 800
+apply_energy_source(highspeed_locomk2)
 
 local highspeed_locomk3 = copyPrototype("locomotive", "locomotive", "highspeed-locomotiveMK3")
 highspeed_locomk3.icon = "__base__/graphics/icons/locomotive.png"
@@ -37,6 +47,7 @@ highspeed_locomk3.braking_force = 130
 highspeed_locomk3.friction_force = 1
 highspeed_locomk3.air_resistance = 0.0005
 highspeed_locomk3.max_health = 800
+apply_energy_source(highspeed_locomk3)
 
 local highspeed_locomk4 = copyPrototype("locomotive", "locomotive", "highspeed-locomotiveMK4")
 highspeed_locomk4.icon = "__base__/graphics/icons/locomotive.png"
@@ -50,6 +61,7 @@ highspeed_locomk4.braking_force = 250
 highspeed_locomk4.friction_force = 1
 highspeed_locomk4.air_resistance = 0.0005
 highspeed_locomk4.max_health = 800
+apply_energy_source(highspeed_locomk4)
 
 local highspeed_cargo = copyPrototype("cargo-wagon", "cargo-wagon", "highspeed-cargo-wagon")
 highspeed_cargo.max_speed = 10
