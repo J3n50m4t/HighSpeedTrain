@@ -7,12 +7,12 @@ Date: 2026-07-12
 Version: 1.0.2
 Date: 2024-11-08
   Info:
-    - 1.0.2
+    - finalize release metadata cleanup
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.1
 Date: 2024-11-08
   Info:
-    - update to 2.0.0
+    - normalize mod versioning for semantic-release
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.0
 Date: 2024-11-08
@@ -20,18 +20,3 @@ Date: 2024-11-08
     - typo
   Translation:
     - update
----------------------------------------------------------------------------------------------------
-Version: 2.0.0
-  Features:
-    - Adding Fluid Wagon Mk2
-    - Adding Cargo Wagon Mk2
-  Bugfixes:
-    - Fixing Typos
----------------------------------------------------------------------------------------------------
-Version: 1.0.1
-  Bugfixes:
-    - Fixed issue #3 - Recipe requires itself
----------------------------------------------------------------------------------------------------
-Version: 1.0.0
-  Major Features:
-    - Factorio 2.0 support
