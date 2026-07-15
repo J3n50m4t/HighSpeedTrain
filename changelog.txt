@@ -2,26 +2,26 @@
 Version: 1.2.0
 Date: 2026-07-13
   Features:
-    - [settings] add free recipe mode
+    - [settings] Added free recipe mode
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.0
 Date: 2026-07-12
   Features:
-    - [settings] :rocket: Add Void Fuel Setting
+    - [settings] Added no-fuel mode for HighSpeedTrain locomotives
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.2
 Date: 2024-11-08
   Info:
-    - finalize release metadata cleanup
+    - Finalized release metadata cleanup
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.1
 Date: 2024-11-08
   Info:
-    - normalize mod versioning for semantic-release
+    - Normalized mod versioning for semantic-release
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.0
 Date: 2024-11-08
   Bugfixes:
-    - typo
+    - Fixed typos
   Translation:
-    - update
+    - Updated localization

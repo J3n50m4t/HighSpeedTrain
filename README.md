@@ -1,11 +1,11 @@
 # HighSpeedTrain
 
-Adds 3 faster Trains and a cargo wagon.
-* Mk1: 4 Times faster  @ 73% effectivity
-* Mk2: 5 Times faster  @ 63% effectivity
-* Mk3: 7 Times faster  @ 50% effectivity
-* Wagon: Inventory Size 60 and Maxspeed
+Adds 3 high-speed locomotives and a matching cargo wagon for fast rail networks.
+* Mk1: 4x faster at 73% efficiency
+* Mk2: 5x faster at 63% efficiency
+* Mk3: 7x faster at 50% efficiency
+* Wagon: 60 inventory slots and built for top speed
 * ![Mk3 Train](http://i.imgur.com/oDshfnr.png)
 * Fluid by [/u/Ostrei](https://www.reddit.com/user/Ostrei)
 
-Please open issues at Github, so I get notified
+Please open issues on GitHub so I get notified.
