@@ -93,6 +93,12 @@ highspeed_fluidMK2.braking_force = 250
 highspeed_fluidMK2.icon = "__base__/graphics/icons/fluid-wagon.png";
 highspeed_fluidMK2.max_health = 800
 
+local highspeed_artillery = copyPrototype("artillery-wagon", "artillery-wagon", "highspeed-artillery-wagon")
+highspeed_artillery.max_speed = 10
+highspeed_artillery.braking_force = 50
+highspeed_artillery.icon = "__base__/graphics/icons/artillery-wagon.png"
+highspeed_artillery.max_health = 1000
+
 
 data:extend({
   highspeed_loco,
@@ -102,5 +108,6 @@ data:extend({
   highspeed_cargo,
   highspeed_cargomk2,
   highspeed_fluid,
-  highspeed_fluidMK2
+  highspeed_fluidMK2,
+  highspeed_artillery
 })

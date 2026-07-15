@@ -77,6 +77,15 @@ highspeed_fluidmk2.ingredients = {
 }
 apply_recipe_mode(highspeed_fluidmk2)
 
+local highspeed_artillery = copyPrototype("recipe", "artillery-wagon", "highspeed-artillery-wagon")
+highspeed_artillery.ingredients = {
+  {type = "item", name = "artillery-wagon", amount = 1},
+  {type = "item", name = "processing-unit", amount = 40},
+  {type = "item", name = "electric-engine-unit", amount = 20},
+  {type = "item", name = "speed-module-2", amount = 10}
+}
+apply_recipe_mode(highspeed_artillery)
+
 data:extend({
   highspeed_loco,
   highspeed_locomk2,
@@ -85,5 +94,6 @@ data:extend({
   highspeed_cargo,
   highspeed_cargomk2,
   highspeed_fluid,
-  highspeed_fluidmk2
+  highspeed_fluidmk2,
+  highspeed_artillery
 })

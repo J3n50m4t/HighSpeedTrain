@@ -236,6 +236,34 @@ local highspeedfluidmk2 = {
 }
 apply_technology_mode(highspeedfluidmk2)
 
+local highspeedartillery = {
+  type = "technology",
+  name = "highspeedartillery",
+  icon = "__base__/graphics/technology/railway.png",
+  icon_size = 128,
+  prerequisites = {"highspeedtrain", "artillery"},
+  effects = {
+    {
+      type = "unlock-recipe",
+      recipe = "highspeed-artillery-wagon"
+    }
+  },
+  unit = {
+    count = 250,
+    ingredients = {
+      {"automation-science-pack", 2},
+      {"logistic-science-pack", 2},
+      {"chemical-science-pack", 2},
+      {"military-science-pack", 2},
+      {"production-science-pack", 2},
+      {"utility-science-pack", 2}
+    },
+    time = 45
+  },
+  order = "c-g-c"
+}
+apply_technology_mode(highspeedartillery)
+
 data:extend({
   highspeedtrain,
   highspeedtrainmk2,
@@ -244,5 +272,6 @@ data:extend({
   highspeedcargo,
   highspeedcargomk2,
   highspeedfluid,
-  highspeedfluidmk2
+  highspeedfluidmk2,
+  highspeedartillery
 })
