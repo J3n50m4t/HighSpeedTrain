@@ -10,10 +10,9 @@
 --     dabei vorkam - genau diese Liste liefert /hst-info zurueck (ehrlich und
 --     billig, statt dafuer bei jedem Aufruf die ganze Karte abzusuchen).
 
--- Versions-Stempel hart am Code: info.json ist im Auslieferungszustand (Zip) von
--- der Control-Stufe aus nicht zuverlaessig lesbar. Beim Release zusammen mit
--- info.json anheben.
-local MOD_VERSION = "1.4.0"
+-- Version zur Laufzeit aus der aktiven Mod-Liste lesen: semantic-release bumpet
+-- nur info.json, ein hartkodierter String waere nach jedem Release veraltet.
+local MOD_VERSION = script.active_mods["HighSpeedTrain"] or "dev"
 
 -- Die Lokomotiven des Mods heissen highspeed-locomotive, ...MK2, ...MK3, ...MK4.
 -- Die Vanilla-Lok heisst nur "locomotive", das Praefix trifft sie also nicht.
