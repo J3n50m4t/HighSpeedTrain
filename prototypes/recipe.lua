@@ -75,7 +75,7 @@ apply_recipe_mode(highspeed_cargomk2)
 apply_tinted_icon(highspeed_cargomk2, "__base__/graphics/icons/cargo-wagon.png", {r = 0.93, g = 0.25, b = 0.23, a = 1.0})
 
 local highspeed_fluid = copyPrototype("recipe", "fluid-wagon", "highspeed-fluid-wagon")
-highspeed_fluid.category = "crafting-with-fluid"
+highspeed_fluid.categories = { "crafting-with-fluid" }  -- 2.1: category/additional_categories merged into categories
 highspeed_fluid.ingredients = {
   {type = "item", name = "fluid-wagon", amount = 3},
   {type = "item", name = "processing-unit", amount = 20},
@@ -86,7 +86,7 @@ apply_recipe_mode(highspeed_fluid)
 apply_tinted_icon(highspeed_fluid, "__base__/graphics/icons/fluid-wagon.png", {r = 0.18, g = 0.45, b = 0.95, a = 1.0})
 
 local highspeed_fluidmk2 = copyPrototype("recipe", "fluid-wagon", "highspeed-fluid-wagonMK2")
-highspeed_fluidmk2.category = "crafting-with-fluid"
+highspeed_fluidmk2.categories = { "crafting-with-fluid" }
 highspeed_fluidmk2.ingredients = {
   {type = "item", name = "highspeed-fluid-wagon", amount = 5},
   {type = "item", name = "processing-unit", amount = 250},
