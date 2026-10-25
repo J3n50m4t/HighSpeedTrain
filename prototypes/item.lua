@@ -70,6 +70,33 @@ apply_tinted_icon(highspeed_artillery, "__base__/graphics/icons/artillery-wagon.
 })
 highspeed_artillery.order = "a[train-system]-f[highspeed-artillery-wagon]"
 
+-- Mk2-Ton Weinrot: hebt sich von allen bestehenden Toenen ab (Loks Blau/Cyan/Orange/Rot,
+-- Cargo Gelb/Rot/Magenta, Fluid Blau/Gruen/Teal, Artillerie Mk1 Lila). Der kleinste
+-- RGB-Abstand zu einem bestehenden Ton betraegt 0.39 - groesser war der Mindestabstand
+-- innerhalb der Rampe noch nie (vorher minimal 0.21 zwischen Lok-Mk4-Rot und Cargo-Mk2-Rot).
+local highspeed_artillerymk2 = copyPrototype("item-with-entity-data", "artillery-wagon", "highspeed-artillery-wagonMK2")
+apply_tinted_icon(highspeed_artillerymk2, "__base__/graphics/icons/artillery-wagon.png", {
+  r = 0.55, g = 0.10, b = 0.35, a = 1.0
+})
+highspeed_artillerymk2.order = "a[train-system]-f[highspeed-artillery-wagon]"
+
+-- Mk2-Granate. Dump-Audit vorweg: kein einziges ammo-Proto im Dump hat ein damage-Feld,
+-- der Schaden steckt im Projektil-Proto 'artillery-projectile' (die Kopie mit dem
+-- doppelten Schaden steht in prototypes/entity.lua). Hier setzt das Item nur per
+-- ammo_type.action.action_delivery.projectile auf diese Kopie um; stack_size 1,
+-- weight 100000 und subgroup 'ammo' bleiben Vanilla. ammo_category bleibt
+-- 'artillery-shell': damit laden Vanilla-Artilleriewagen und beide Hochspeed-Wagen beide
+-- Granaten, und die Vanilla-Forschungslinien fuer Schaden ('ammo-damage') und
+-- Feuergeschwindigkeit ('gun-speed') dieser Kategorie wirken auf beide gleich.
+-- Der Ton ist derselbe wie beim Mk2-Wagen: die Rampe kodiert die Mk-Stufe, nicht das
+-- Fahrzeug, also erkennt der Spieler an Weinrot "Mk2" - an Waggon, Granate und Tech.
+local highspeed_artillery_shellmk2 = copyPrototype("ammo", "artillery-shell", "highspeed-artillery-shell-mk2")
+highspeed_artillery_shellmk2.ammo_type.action.action_delivery.projectile = "highspeed-artillery-projectile-mk2"
+apply_tinted_icon(highspeed_artillery_shellmk2, "__base__/graphics/icons/artillery-shell.png", {
+  r = 0.55, g = 0.10, b = 0.35, a = 1.0
+})
+highspeed_artillery_shellmk2.order = "d[explosive-cannon-shell]-d[artillery-mk2]"
+
 
 data:extend({
   highspeed_loco,
@@ -82,5 +109,7 @@ data:extend({
   highspeed_fluid,
   highspeed_fluidmk2,
   highspeed_fluidmk3,
-  highspeed_artillery
+  highspeed_artillery,
+  highspeed_artillerymk2,
+  highspeed_artillery_shellmk2
 })

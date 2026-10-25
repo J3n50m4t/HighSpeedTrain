@@ -2,9 +2,10 @@
 
 Adds high-speed locomotives and matching wagons for fast rail networks: four
 locomotive tiers, cargo wagons in three tiers (Mk3 holds 200 slots) and fluid
-wagons in three tiers (Mk3 holds 222,000), and a high-speed artillery wagon.
-Everything is a modified copy of the vanilla counterpart, so the wagons behave
-like the ones you already know.
+wagons in three tiers (Mk3 holds 222,000), and artillery wagons in two tiers —
+the Mk2 fires 25 % faster and the mod's Mk2 shell does twice the blast damage of
+a vanilla one. Everything is a modified copy of the vanilla counterpart, so the
+wagons behave like the ones you already know.
 
 Current version: 1.4.0, targeting Factorio 2.1 (`factorio_version` in
 `info.json`). All numbers below are read back from the game's own data dump
@@ -41,11 +42,51 @@ harder, but are slightly less tough. The Mk4 value is the 100 % reference: the
 | High-Speed Fluid Wagon | 111,000 (vanilla: 50,000) | 50 | 2500 | 800 |
 | High-Speed Fluid Wagon Mk2 | 111,000 (vanilla: 50,000) | 250 | 2500 | 800 |
 | High-Speed Fluid Wagon Mk3 | 222,000 (vanilla: 50,000) | 250 | 2500 | 800 |
-| High-Speed Artillery Wagon | artillery stats unchanged from vanilla (gun, ammo, range) | 50 | 4000 | 1000 |
+| High-Speed Artillery Wagon | vanilla gun (`cooldown` 200, `range` 224) | 50 | 4000 | 1000 |
+| High-Speed Artillery Wagon Mk2 | own gun, `cooldown` 150 → 25 % faster, `range` 224 | 250 | 4000 | 1000 |
 
 Wagon capacity and inventory use the live 2.1 fields (`capacity`,
 `inventory_size`). Wagons do not carry a speed value any more — see
 "Factorio 2.1 notes".
+
+## Artillery: which fields 2.1 really leaves you
+
+The numbers above come from dumping `data.raw`, not from wiki memory, and they
+decided what an "Mk2 artillery wagon" can honestly mean:
+
+- **The wagon has no shooting stats of its own.** In 2.1 there is no
+  `attack_parameters`, `range` or `reload` on `artillery-wagon` at all. What the
+  entity does carry is `gun` (the *name* of the gun prototype that does the
+  shooting), plus `turret_rotation_speed` 0.001, `turn_after_shooting_cooldown`
+  60, `manual_range_modifier` 2.5, `ammo_stack_limit` 100 and `inventory_size` 1.
+- **So Mk2 upgrades the gun prototype.** The vanilla `gun` prototype
+  `artillery-wagon-cannon` carries `attack_parameters.cooldown` 200 (ticks
+  between shots; the vanilla gun census spans 1–200), `range` 224 and
+  `min_range` 32, and base itself researches that exact axis — the technology
+  `artillery-shell-speed-1` has effect type `gun-speed` on ammo category
+  `artillery-shell`. The Mk2 wagon points at its own copy of that gun with
+  `cooldown` 150. `range`/`min_range` stay untouched: base runs a separate
+  `artillery-shell-range-1` line (`artillery-range` effect) for that. The three
+  aiming fields above are deliberately untouched too, because the dump shows
+  wagon *and* `artillery-turret` carrying identical values — there is no other
+  vanilla value to raise them to, and inventing one would be a dead field.
+- **Damage lives on the shell's projectile, not on the ammo item.** No ammo
+  prototype in the dump has a `damage` field. The blast is in the
+  `artillery-projectile` prototype: two damage nodes at radius 4 — 1000 physical
+  plus 1000 explosion. The mod's `highspeed-artillery-shell-mk2` points its
+  `ammo_type` at a copy of that projectile with **2000 + 2000**, twice the
+  vanilla dump values. `ammo_category` stays `artillery-shell`, so every
+  artillery wagon (vanilla, Mk1 and Mk2) can load either shell, and base's own
+  damage/fire-rate research lines keep working on both.
+- **Quality.** `quality_affects_*` exists exactly three times in the whole dump
+  (`locomotive`→max_speed, `cargo-wagon`→inventory_size, `fluid-wagon`→capacity).
+  `artillery-wagon`, `gun` and `ammo` prototypes have none, so the Mk2 artillery
+  copies set none either — a made-up flag would be ignored silently.
+
+The Mk2 shell recipe is derived from the vanilla shell recipe only
+(`radar` 1, `calcite` 1, `tungsten-plate` 4, `explosives` 8, 15 s): the charge is
+what doubles, so `explosives` goes 8 → 16 and `energy_required` 15 → 30, while
+fuze, calcite and the tungsten casing stay as they are.
 
 ## Startup settings
 
@@ -58,7 +99,7 @@ unlock state lines up again after an update.
 | Setting (internal name) | Default | Effect |
 |---|---|---|
 | High-speed trains do not need fuel (`highspeedtrain-no-fuel`) | off | All four high-speed locomotives get a `void` energy source and run without fuel. Vanilla locomotives are untouched. |
-| Free recipes and instant unlocks (`highspeedtrain-free-mode`) | off | All eleven HighSpeedTrain recipes become ingredient-free and are enabled right away; the eleven technologies are hidden, lose prerequisites and unlock effects, and shrink to a single automation pack in 1 s. |
+| Free recipes and instant unlocks (`highspeedtrain-free-mode`) | off | All thirteen HighSpeedTrain recipes become ingredient-free and are enabled right away; the twelve technologies are hidden, lose prerequisites and unlock effects, and shrink to a single automation pack in 1 s. |
 | Highspeed Mk4-Tempo-Prozent (`highspeedtrain-mk4-speed-percent`) | 100 % | Scales only the Mk4 locomotive's `max_speed`, to 20–100 % of the 50 reference value (40 % → 20, 20 % → 10). `max_power`, braking force and weight are untouched, and the Mk1–Mk3 ramp (4/5/7) keeps its shape. Purpose: the Mk4 outlier at the top of the ramp can be dialled back deliberately instead of being hard-coded. |
 
 ## Research and crafting (default mode)
@@ -74,7 +115,8 @@ braking-force-2 ─► highspeedtrain ─┬─► highspeedtrainmk2 ─► high
                                    │                                              (also needs vanilla "speed-module-3")
                                    ├─► highspeedfluid ─► highspeedfluidmk2 ─► highspeedfluidmk3
                                    │                                              (also needs vanilla "speed-module-3")
-                                   └─► highspeedartillery  (also needs vanilla "artillery")
+                                   └─► highspeedartillery ─► highspeedartillerymk2
+                                          (also needs vanilla "artillery")    (also needs vanilla "artillery-shell-speed-1")
 ```
 
 Recipes are built from vanilla parts, and each tier consumes the previous one:
@@ -92,6 +134,8 @@ Recipes are built from vanilla parts, and each tier consumes the previous one:
 | High-Speed Fluid Wagon Mk2 | 5 High-Speed Fluid Wagons, 250 processing units, 10 speed modules, 100 lubricant |
 | High-Speed Fluid Wagon Mk3 | 4 High-Speed Fluid Wagon Mk2s, 500 processing units, 10 speed modules 3, 100 lubricant |
 | High-Speed Artillery Wagon | 1 artillery wagon, 40 processing units, 20 electric engine units, 10 speed modules 2 |
+| High-Speed Artillery Wagon Mk2 | 1 High-Speed Artillery Wagon, 80 processing units, 40 electric engine units, 10 speed modules 2 |
+| High-Speed Artillery Shell Mk2 | 1 radar, 1 calcite, 4 tungsten plates, 16 explosives (vanilla shell: 8), 30 s |
 
 The three fluid wagon recipes are `crafting-with-fluid` (as in 2.1). Research
 costs follow the tier: the top-tier technologies (`highspeedtrainmk4`,
@@ -99,10 +143,17 @@ costs follow the tier: the top-tier technologies (`highspeedtrainmk4`,
 science types, and the two Mk3 technologies (`highspeedcargomk3` and
 `highspeedfluidmk3`) sit one step above them at 250 packs of all seven — 25
 packs per unit instead of 20, so 25 % above their Mk2 in count and per unit
-alike, and each also requires vanilla `speed-module-3` as a prerequisite. The
-two Mk3 recipes are also the only ones in the mod that raise `energy_required`
-above the inherited value (1 s cargo, 1.5 s fluid) to 10 seconds: four Mk2
-wagons plus 500 processing units should take a visible amount of assembly time.
+alike, and each also requires vanilla `speed-module-3` as a prerequisite. The artillery
+Mk2 (`highspeedartillerymk2`) scales the `highspeedartillery` pattern by the same
+25 %: 313 iterations of 3 packs each (from 250 × 2; 250 × 1.25 = 312.5 and
+2 × 1.25 = 2.5, and both are rounded up because 2.1 has no half lab pack), still
+on the six science types of its Mk1, still 45 s per iteration. Its second
+prerequisite is vanilla `artillery-shell-speed-1`, the research line that speeds
+up the very gun the Mk2 replaces. Three recipes are the only ones in the mod that
+raise `energy_required` above the inherited value: the two Mk3 wagon recipes (1 s
+cargo, 1.5 s fluid → 10 s: four Mk2 wagons plus 500 processing units should take a
+visible amount of assembly time) and the Mk2 shell recipe (15 s → 30 s for the
+double charge).
 The cargo Mk3 holds 200 slots — double the Mk2's 100, five times vanilla's 40 —
 and the fluid Mk3 holds `capacity` 222,000, exactly double the 111,000 of Mk1
 and Mk2 and 4.44 times vanilla's 50,000; both scale with quality like their
@@ -175,7 +226,8 @@ warning points at the train's position instead of its name.
   A quality tier scales HighSpeedTrain locomotive speed, cargo-wagon inventory
   and fluid-wagon capacity just like it does for the matching vanilla wagon;
   the artillery wagon carries no such flag because the vanilla artillery wagon
-  has none either.
+  has none either, and neither has any `gun` or `ammo` prototype in the dump —
+  the Mk2 artillery copies therefore set no quality flag at all.
 - **Recipes** use the merged 2.1 `categories` field; the pre-2.0
   `category`/`additional_categories` pair is rejected by the loader.
 

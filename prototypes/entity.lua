@@ -197,6 +197,74 @@ highspeed_artillery.icon = "__base__/graphics/icons/artillery-wagon.png"
 highspeed_artillery.max_health = 1000
 -- bewusst kein quality_affects_*: das Vanilla-Vorbild (artillery-wagon) hat keins
 
+-- Artillerie Mk2: das Feld-Wissen stammt aus dem Base-Dump (Factorio 2.1.23), nicht aus
+-- der Dokumentation. Was an der Wagen-ENTITAET schussrelevant ist, ist nur: gun (Name des
+-- Geschuetz-Protos), turret_rotation_speed 0.001, turn_after_shooting_cooldown 60,
+-- manual_range_modifier 2.5, ammo_stack_limit 100, inventory_size 1. Kein
+-- attack_parameters/range/reload mehr am Waggon selbst. Fuer turret_rotation_speed,
+-- manual_range_modifier und turn_after_shooting_cooldown zeigt der Dump an Waggon UND
+-- artillery-turret ein und denselben Vanilla-Wert - es gibt dort keinen anderen
+-- Vanilla-Wert, auf den wir erhoehen koennen, also bleiben die drei in Ruhe.
+-- Der Knopf sitzt im gun-Proto (Raw-Kategorie gun) 'artillery-wagon-cannon':
+-- attack_parameters.cooldown 200 = Ticks zwischen den Schuessen (Vanilla-Guns im Dump
+-- liegen bei 1..200), range 224, min_range 32, ammo_category 'artillery-shell'. Dass
+-- genau diese Achse das Spiel bewegt, belegt base selbst: Vanilla-Technik
+-- 'artillery-shell-speed-1' hat den effect-Typ 'gun-speed' auf ammo_category
+-- 'artillery-shell'. Mk2 bekommt ein eigenes Geschuetz mit cooldown 150 (25 % kuerzer als
+-- die 200 Ticks); range/min_range bleiben unangetastet, dafuer unterhaelt base mit
+-- 'artillery-shell-range-1' (effect-Typ 'artillery-range') eine eigene Forschungslinie.
+local highspeed_artillery_cannonmk2 =
+  copyPrototype("gun", "artillery-wagon-cannon", "highspeed-artillery-wagon-cannonMK2")
+highspeed_artillery_cannonmk2.attack_parameters.cooldown = 150
+
+-- Mk2-Wagen wie ueblich eine Kopie des Vanilla-Vorbilds: Bremskraft 250 wie die anderen
+-- Mk2-Stufen, max_health 1000 wie der Mk1-Artilleriewagen, weight 4000 und color bleiben
+-- Vanilla (Wagen werden nur ueber die Icon-Tints unterschieden). Neu gegenueber Mk1 ist
+-- das eigene schnellere Geschuetz. Wieder kein quality_affects_*: der ganze Dump kennt
+-- genau drei dieser Felder (locomotive/quality_affects_max_speed, cargo-wagon/
+-- quality_affects_inventory_size, fluid-wagon/quality_affects_capacity) - an
+-- artillery-wagon, gun- und ammo-Protos gibt es keins, ein erfundenes Flag wuerde der
+-- Loader stillschweigend ignorieren.
+local highspeed_artillerymk2 = copyPrototype("artillery-wagon", "artillery-wagon", "highspeed-artillery-wagonMK2")
+highspeed_artillerymk2.braking_force = 250
+highspeed_artillerymk2.icon = "__base__/graphics/icons/artillery-wagon.png"
+highspeed_artillerymk2.max_health = 1000
+highspeed_artillerymk2.gun = highspeed_artillery_cannonmk2.name
+
+-- Munition-Schaden: das ammo-Item 'artillery-shell' hat im Dump KEIN damage-Feld (auch
+-- kein anderes ammo-Proto hat eins). Der Schaden steckt im Projectile-Proto
+-- 'artillery-projectile' (Raw-Kategorie artillery-projectile): zwei damage-Knoten im
+-- Wirkungsradius 4 - 1000 physikalisch + 1000 Explosion. Die Mk2-Granate bekommt eine
+-- Kopie dieses Projektils mit dem Doppelten dieser beiden Dump-Werte; welche Granate
+-- welches Projektil abfeuert, entscheidet das ammo-Item in prototypes/item.lua.
+-- Verstarkung ueber alle damage-Knoten im action-Baum (final_action enthaelt laut Dump
+-- keinen damage-Knoten und bleibt unberoehrt). Erwartet werden wie im Dump gesehen genau
+-- zwei Fundstellen; weicht die Vanilla-Struktur davon ab, bricht die Datenstufe mit
+-- Fehler laut ab, statt stillschweigend eine unveraenderte Granate auszuliefern.
+local function scale_damage_amounts(root, factor)
+  local hits = 0
+  local function walk(node)
+    for _, child in pairs(node) do
+      if type(child) == "table" then
+        if child.type == "damage" and type(child.damage) == "table"
+            and type(child.damage.amount) == "number" then
+          child.damage.amount = child.damage.amount * factor
+          hits = hits + 1
+        end
+        walk(child)
+      end
+    end
+  end
+  walk(root)
+  return hits
+end
+
+local highspeed_artillery_projectilemk2 =
+  copyPrototype("artillery-projectile", "artillery-projectile", "highspeed-artillery-projectile-mk2")
+if scale_damage_amounts(highspeed_artillery_projectilemk2.action, 2) ~= 2 then
+  error("highspeed-artillery-projectile-mk2: erwartet genau 2 damage-Knoten im " ..
+    "Vanilla-artillery-projectile (1000 physikalisch + 1000 Explosion)")
+end
 
 data:extend({
   highspeed_loco,
@@ -209,5 +277,8 @@ data:extend({
   highspeed_fluid,
   highspeed_fluidMK2,
   highspeed_fluidMK3,
-  highspeed_artillery
+  highspeed_artillery,
+  highspeed_artillerymk2,
+  highspeed_artillery_cannonmk2,
+  highspeed_artillery_projectilemk2
 })
