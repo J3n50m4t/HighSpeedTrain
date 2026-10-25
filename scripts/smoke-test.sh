@@ -47,7 +47,7 @@ fi
 echo "== [2/3] Package mod =="
 STAGE="$WORK/mods_stage/$NAME\_$VERSION"
 mkdir -p "$STAGE"
-git ls-files -co --exclude-standard | grep -v -E '^(\.git/|\.github/|\.vscode/|scripts/|\.releaserc$|\.gitignore$)' | while IFS= read -r f; do
+git ls-files -co --exclude-standard | grep -v -E '^(\.|scripts/)' | while IFS= read -r f; do
   mkdir -p "$STAGE/$(dirname "$f")"
   cp "$f" "$STAGE/$f"
 done
