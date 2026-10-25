@@ -4,8 +4,7 @@
 #
 # Modes:
 #   FACTORIO_BIN=/path/to/factorio   use an existing binary (local dev)
-#   FACTORIO_USERNAME + FACTORIO_TOKEN set -> download latest 2.0 headless (CI)
-#   neither available                -> Lua/info.json checks only, with warning
+#   otherwise                        -> download current stable headless tarball
 set -euo pipefail
 
 cd "$(git rev-parse --show-toplevel)"
@@ -60,13 +59,23 @@ echo "== [3/3] Headless data-stage load =="
 BIN="${FACTORIO_BIN:-}"
 if [ -z "$BIN" ]; then
   # Current stable headless tarball is publicly downloadable (no account).
-  echo "Downloading current stable Factorio headless (linux64, anonymous)..."
-  curl -fsSL "https://factorio.com/get-download/stable/headless/linux64" -o "$WORK/factorio.tar.xz"
+  case "$(uname -m)" in
+    x86_64)  PLAT=linux64 ;;
+    aarch64|arm64) PLAT=linux-arm64 ;;
+    *) echo "::error::Unsupported platform $(uname -m) for auto-download; set FACTORIO_BIN"; exit 1 ;;
+  esac
+  echo "Downloading current stable Factorio headless ($PLAT, anonymous)..."
+  curl -fsSL "https://factorio.com/get-download/stable/headless/$PLAT" -o "$WORK/factorio.tar.xz"
   mkdir -p "$WORK/fbin"
   tar -xJf "$WORK/factorio.tar.xz" -C "$WORK/fbin"
   BIN=$(find "$WORK/fbin" -type f -name factorio -path "*/bin/*" | head -n1)
   [ -n "$BIN" ] || { echo "::error::Downloaded archive contains no factorio binary"; exit 1; }
   chmod +x "$BIN"
+  # Tarball installs are self-contained: point read-data at the extracted data
+  # dir, otherwise the game probes system paths and finds no "core" package.
+  # Layout: <install>/bin/<arch>/factorio  ->  data sits at <install>/data
+  INSTALL=$(dirname "$(dirname "$(dirname "$BIN")")")
+  if [ -d "$INSTALL/data" ]; then READ_DATA="$INSTALL/data"; fi
 fi
 
 GAME_VERSION=$("$BIN" --version | head -n1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1) || GAME_VERSION="unknown"
@@ -94,16 +103,23 @@ EOF
 mkdir -p "$WORK/config"
 # Minimal config: keep all writes (log, dumps, cache) inside $WORK, leave the
 # real user install untouched. Factorio fills the remaining defaults itself.
-cat > "$WORK/config/config.ini" <<EOF
-[path]
-write-data=$WORK
-EOF
+{
+  echo "[path]"
+  echo "write-data=$WORK"
+  if [ -n "${READ_DATA:-}" ]; then echo "read-data=$READ_DATA"; fi
+} > "$WORK/config/config.ini"
 COMMON_ARGS=(-c "$WORK/config/config.ini" --mod-directory "$WORK/mods")
-if "$BIN" --help 2>&1 | grep -q -- "--headless"; then
+HELP=$("$BIN" --help 2>&1)
+if grep -q -- "--headless" <<<"$HELP"; then
+  # Full client build: can enter headless mode and runs migrations via --create.
   LOAD_ARGS=(--headless "${COMMON_ARGS[@]}" --create "$WORK/testworld.zip")
-else
-  echo "Binary has no --headless; using --dump-data (data stage only)."
+elif grep -q -- "--window-size" <<<"$HELP"; then
+  # GUI-only build (e.g. macOS Steam client): --dump-data still runs data stage.
+  echo "GUI-only binary detected; using --dump-data (data stage only)."
   LOAD_ARGS=("${COMMON_ARGS[@]}" --dump-data)
+else
+  # Dedicated headless build: no --headless flag (it is headless already).
+  LOAD_ARGS=("${COMMON_ARGS[@]}" --create "$WORK/testworld.zip")
 fi
 
 if ! "$BIN" "${LOAD_ARGS[@]}" >"$WORK/stdout.log" 2>&1; then
@@ -113,6 +129,12 @@ if ! "$BIN" "${LOAD_ARGS[@]}" >"$WORK/stdout.log" 2>&1; then
 fi
 if grep -nE "Error|Failed to (load|parse)" "$WORK/factorio-current.log" 2>/dev/null; then
   echo "::error::Errors in Factorio log:"
+  tail -n 40 "$WORK/factorio-current.log"
+  exit 1
+fi
+# Guard against a silent pass where the mod was never actually loaded.
+if ! grep -q "Loading mod $NAME" "$WORK/factorio-current.log" 2>/dev/null; then
+  echo "::error::Mod $NAME never appeared in the load sequence:"
   tail -n 40 "$WORK/factorio-current.log"
   exit 1
 fi
