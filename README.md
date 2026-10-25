@@ -267,34 +267,3 @@ that pipeline: `changelog.txt` is *written by the release*, not by hand —
 together with the bumped `info.json`. Hand-writing an entry for an unreleased
 version would leave two `Version: x` blocks once that version ships.
 
-### Save upgrade check (1.4.0 → 1.5.0)
-
-The upgrade path was driven through an isolated Factorio rather than reasoned
-about: a map created and filled while only the released 1.4.0 pack was
-installed (all nine technologies of that version researched without any
-`reset_technologies` call, four HighSpeedTrain items on the ground, fluid wagon
-`fluid_capacity` 50 000, no Mk3 prototype) was then loaded with the current
-development pack, versioned 1.5.0 — the version `semantic-release` will write.
-Exit code 0, no `Error`/`Warning` line in the game log, no `Applying migration:`
-line. In that old force afterwards: the nine researched technologies are still
-researched and the old recipes still enabled, while the three new technologies
-(`highspeedcargomk3`, `highspeedfluidmk3`, `highspeedartillerymk2`) and their
-recipes are present but unresearched/locked — Factorio 2.1 adds new mod
-technologies to existing forces on its own, and the old migration files stay
-skipped because they carry versions below the saved one. New content is live
-(`highspeed-fluid-wagonMK3`, `highspeed-cargo-wagonMK3`,
-`highspeed-artillery-wagonMK2`, the Mk2 shell) and the capacity fix shows up in
-the loaded save (111 000, Mk3 222 000). So no `migrations/1.5.0.lua` is needed
-and none was invented; whether migrations would run at all was proven with a
-throw-away probe file in the test pack, which did log
-`Applying migration: HighSpeedTrain: …`. The released 1.4.0 declares
-`factorio_version: 2.0`, so the *test* copy of that pack additionally carried
-the two 2.1-only compat bits that `main` already has (`category` →
-`categories` in the fluid recipes, `factorio_version: 2.1`); no repository file
-was touched for that.
-
-Localization lives in `locale/en` and `locale/de` — translations of the entity,
-technology and setting strings are easy wins. Issues and pull requests on
-GitHub: <https://github.com/J3n50m4t/HighSpeedTrain>.
-
-Authors: J3n50m4t and Ostrei.
