@@ -12,6 +12,11 @@ end
 -- Proto ausschliesslich das Feld, das das Vanilla-Vorbild laut base-Dump hat:
 -- locomotive -> max_speed, cargo-wagon -> inventory_size, fluid-wagon -> capacity.
 -- artillery-wagon hat in Vanilla kein quality_affects_*-Feld, bleibt deshalb leer.
+--
+-- Farbcodierung pro Mk-Stufe: color (Fahrzeug auf der Karte) ist pro Stufe eindeutig
+-- und gleich der RGB des Icon-Tints in item.lua/recipe.lua (dort alpha 1.0):
+-- Mk1 Blau, Mk2 Cyan, Mk3 Orange, Mk4 Rot. Auf der Karte unterscheidbar, dezent genug
+-- fuer den Vanilla-Kartenhintergrund. Wagen bleiben bei Vanilla-color (nur Icons getaenmt).
 
 local highspeed_loco = copyPrototype("locomotive", "locomotive", "highspeed-locomotive")
 highspeed_loco.icon = "__base__/graphics/icons/locomotive.png"
@@ -32,7 +37,7 @@ apply_energy_source(highspeed_loco)
 local highspeed_locomk2 = copyPrototype("locomotive", "locomotive", "highspeed-locomotiveMK2")
 highspeed_locomk2.icon = "__base__/graphics/icons/locomotive.png"
 highspeed_locomk2.icon_size = 32
-highspeed_locomk2.color = {r = 0.10, g = 0.19, b = 0.80, a = 0.5}
+highspeed_locomk2.color = {r = 0.05, g = 0.55, b = 0.75, a = 0.5}
 highspeed_locomk2.weight = 1000
 highspeed_locomk2.max_speed = 5 --860.km/h
 highspeed_locomk2.quality_affects_max_speed = true
@@ -47,7 +52,7 @@ apply_energy_source(highspeed_locomk2)
 local highspeed_locomk3 = copyPrototype("locomotive", "locomotive", "highspeed-locomotiveMK3")
 highspeed_locomk3.icon = "__base__/graphics/icons/locomotive.png"
 highspeed_locomk3.icon_size = 32
-highspeed_locomk3.color = {r = 0.10, g = 0.19, b = 0.80, a = 0.5}
+highspeed_locomk3.color = {r = 0.85, g = 0.45, b = 0.10, a = 0.5}
 highspeed_locomk3.weight = 1000
 highspeed_locomk3.max_speed = 7 --860.km/h
 highspeed_locomk3.quality_affects_max_speed = true
@@ -62,7 +67,7 @@ apply_energy_source(highspeed_locomk3)
 local highspeed_locomk4 = copyPrototype("locomotive", "locomotive", "highspeed-locomotiveMK4")
 highspeed_locomk4.icon = "__base__/graphics/icons/locomotive.png"
 highspeed_locomk4.icon_size = 32
-highspeed_locomk4.color = {r = 0.10, g = 0.19, b = 0.80, a = 0.5}
+highspeed_locomk4.color = {r = 0.85, g = 0.10, b = 0.10, a = 0.5}
 highspeed_locomk4.weight = 1000
 highspeed_locomk4.max_speed = 50
 highspeed_locomk4.quality_affects_max_speed = true
