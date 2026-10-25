@@ -23,6 +23,7 @@ local tech_tints = {
   locomotive_mk4 = {r = 0.85, g = 0.10, b = 0.10, a = 1.0},
   cargo_wagon_mk1 = {r = 1.0, g = 0.82, b = 0.18, a = 1.0},
   cargo_wagon_mk2 = {r = 0.93, g = 0.25, b = 0.23, a = 1.0},
+  cargo_wagon_mk3 = {r = 0.92, g = 0.30, b = 0.70, a = 1.0},
   fluid_wagon_mk1 = {r = 0.18, g = 0.45, b = 0.95, a = 1.0},
   fluid_wagon_mk2 = {r = 0.20, g = 0.75, b = 0.35, a = 1.0},
   artillery_wagon = {r = 0.58, g = 0.32, b = 0.86, a = 1.0}
@@ -216,6 +217,39 @@ local highspeedcargomk2 = {
 }
 apply_technology_mode(highspeedcargomk2)
 
+-- Mk3 haengt an Mk2 und an der Vanilla-Technik "speed-module-3", damit die Zutaten des
+-- Rezepts (10x speed-module-3) zum Freischaltzeitpunkt schon herstellbar sind. Das
+-- Unit-Muster von highspeedcargomk2 ist um 25 % erhoeht (count 200 -> 250, je Pack 20 -> 25).
+local highspeedcargomk3 = {
+  type = "technology",
+  name = "highspeedcargomk3",
+  icons = {
+    {icon = cargo_wagon_icon, icon_size = tech_icon_size, tint = tech_tints.cargo_wagon_mk3}
+  },
+  prerequisites = {"highspeedcargomk2", "speed-module-3"},
+  effects = {
+    {
+      type = "unlock-recipe",
+      recipe = "highspeed-cargo-wagonMK3"
+    }
+  },
+  unit = {
+    count = 250,
+    ingredients = {
+      {"automation-science-pack", 25},
+      {"logistic-science-pack", 25},
+      {"chemical-science-pack", 25},
+      {"military-science-pack", 25},
+      {"production-science-pack", 25},
+      {"utility-science-pack", 25},
+      {"space-science-pack", 25}
+    },
+    time = 30
+  },
+  order = "c-g-c"
+}
+apply_technology_mode(highspeedcargomk3)
+
 local highspeedfluid = {
   type = "technology",
   name = "highspeedfluid",
@@ -308,6 +342,7 @@ data:extend({
   highspeedtrainmk4,
   highspeedcargo,
   highspeedcargomk2,
+  highspeedcargomk3,
   highspeedfluid,
   highspeedfluidmk2,
   highspeedartillery

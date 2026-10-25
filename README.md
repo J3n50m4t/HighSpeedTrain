@@ -1,9 +1,9 @@
 # HighSpeedTrain
 
 Adds high-speed locomotives and matching wagons for fast rail networks: four
-locomotive tiers, upgraded cargo and fluid wagons, and a high-speed artillery
-wagon. Everything is a modified copy of the vanilla counterpart, so the wagons
-behave like the ones you already know.
+locomotive tiers, cargo wagons in three tiers (Mk3 holds 200 slots), upgraded
+fluid wagons, and a high-speed artillery wagon. Everything is a modified copy of
+the vanilla counterpart, so the wagons behave like the ones you already know.
 
 Current version: 1.4.0, targeting Factorio 2.1 (`factorio_version` in
 `info.json`). All numbers below are read back from the game's own data dump
@@ -36,6 +36,7 @@ harder, but are slightly less tough. The Mk4 value is the 100 % reference: the
 |---|---|---|---|---|
 | High-Speed Cargo Wagon | 100 slots (vanilla: 40) | 50 | 1000 | 800 |
 | High-Speed Cargo Wagon Mk2 | 100 slots (vanilla: 40) | 250 | 1000 | 800 |
+| High-Speed Cargo Wagon Mk3 | 200 slots (vanilla: 40) | 250 | 1000 | 800 |
 | High-Speed Fluid Wagon | 111,000 (vanilla: 50,000) | 50 | 2500 | 800 |
 | High-Speed Fluid Wagon Mk2 | 111,000 (vanilla: 50,000) | 250 | 2500 | 800 |
 | High-Speed Artillery Wagon | artillery stats unchanged from vanilla (gun, ammo, range) | 50 | 4000 | 1000 |
@@ -55,7 +56,7 @@ unlock state lines up again after an update.
 | Setting (internal name) | Default | Effect |
 |---|---|---|
 | High-speed trains do not need fuel (`highspeedtrain-no-fuel`) | off | All four high-speed locomotives get a `void` energy source and run without fuel. Vanilla locomotives are untouched. |
-| Free recipes and instant unlocks (`highspeedtrain-free-mode`) | off | All nine HighSpeedTrain recipes become ingredient-free and are enabled right away; the nine technologies are hidden, lose prerequisites and unlock effects, and shrink to a single automation pack in 1 s. |
+| Free recipes and instant unlocks (`highspeedtrain-free-mode`) | off | All ten HighSpeedTrain recipes become ingredient-free and are enabled right away; the ten technologies are hidden, lose prerequisites and unlock effects, and shrink to a single automation pack in 1 s. |
 | Highspeed Mk4-Tempo-Prozent (`highspeedtrain-mk4-speed-percent`) | 100 % | Scales only the Mk4 locomotive's `max_speed`, to 20–100 % of the 50 reference value (40 % → 20, 20 % → 10). `max_power`, braking force and weight are untouched, and the Mk1–Mk3 ramp (4/5/7) keeps its shape. Purpose: the Mk4 outlier at the top of the ramp can be dialled back deliberately instead of being hard-coded. |
 
 ## Research and crafting (default mode)
@@ -67,7 +68,8 @@ colour, so the tiers are easy to tell apart in the research tree:
 
 ```
 braking-force-2 ─► highspeedtrain ─┬─► highspeedtrainmk2 ─► highspeedtrainmk3 ─► highspeedtrainmk4
-                                   ├─► highspeedcargo ─► highspeedcargomk2
+                                   ├─► highspeedcargo ─► highspeedcargomk2 ─► highspeedcargomk3
+                                   │                                              (also needs vanilla "speed-module-3")
                                    ├─► highspeedfluid ─► highspeedfluidmk2
                                    └─► highspeedartillery  (also needs vanilla "artillery")
 ```
@@ -82,6 +84,7 @@ Recipes are built from vanilla parts, and each tier consumes the previous one:
 | High-Speed Locomotive Mk4 | 3 Mk3 locos, 250 processing units, 10 speed modules 3 |
 | High-Speed Cargo Wagon | 3 cargo wagons, 20 processing units, 10 speed modules |
 | High-Speed Cargo Wagon Mk2 | 5 High-Speed Cargo Wagons, 250 processing units, 10 speed modules |
+| High-Speed Cargo Wagon Mk3 | 4 High-Speed Cargo Wagon Mk2s, 500 processing units, 10 speed modules 3 |
 | High-Speed Fluid Wagon | 3 fluid wagons, 20 processing units, 10 speed modules, 100 lubricant |
 | High-Speed Fluid Wagon Mk2 | 5 High-Speed Fluid Wagons, 250 processing units, 10 speed modules, 100 lubricant |
 | High-Speed Artillery Wagon | 1 artillery wagon, 40 processing units, 20 electric engine units, 10 speed modules 2 |
@@ -89,7 +92,13 @@ Recipes are built from vanilla parts, and each tier consumes the previous one:
 The fluid wagon recipes are `crafting-with-fluid` (as in 2.1). Research costs
 follow the tier: the top-tier technologies (`highspeedtrainmk4`,
 `highspeedcargomk2`, `highspeedfluidmk2`) ask for 200 packs of all seven
-science types.
+science types, and `highspeedcargomk3` sits one step above them at 250 packs of
+all seven (25 packs per unit instead of 20, so 25 % above Mk2 in count and per
+unit alike). The Mk3 cargo wagon is the only recipe in the mod that raises
+`energy_required` from the inherited 1 second to 10 seconds — four Mk2 wagons
+plus 500 processing units should take a visible amount of assembly time. Its
+inventory of 200 slots is double the Mk2's 100 and five times vanilla's 40, and
+it is reached through `highspeedcargomk3`.
 
 ## Mk4: intentionally extreme
 

@@ -99,6 +99,16 @@ highspeed_cargomk2.inventory_size = 100;
 highspeed_cargomk2.quality_affects_inventory_size = true
 highspeed_cargomk2.max_health = 800
 
+-- Mk3: doppeltes Inventar (200 = 5x Vanilla-40). Bremskraft wie Mk2 (250), weil Wagen
+-- in 2.1 keinen max_speed mehr haben. Auch hier setzt die Mod den
+-- quality_affects_inventory_size-Flag selbst (base setzt ihn erst in data-updates.lua).
+local highspeed_cargomk3 = copyPrototype("cargo-wagon", "cargo-wagon", "highspeed-cargo-wagonMK3")
+highspeed_cargomk3.braking_force = 250
+highspeed_cargomk3.icon = "__base__/graphics/icons/cargo-wagon.png"
+highspeed_cargomk3.inventory_size = 200
+highspeed_cargomk3.quality_affects_inventory_size = true
+highspeed_cargomk3.max_health = 800
+
 local highspeed_fluid = copyPrototype("fluid-wagon", "fluid-wagon", "highspeed-fluid-wagon")
 highspeed_fluid.capacity = 37000 * 3
 highspeed_fluid.quality_affects_capacity = true
@@ -129,6 +139,7 @@ data:extend({
   highspeed_locomk4,
   highspeed_cargo,
   highspeed_cargomk2,
+  highspeed_cargomk3,
   highspeed_fluid,
   highspeed_fluidMK2,
   highspeed_artillery
