@@ -6,12 +6,20 @@ local function apply_energy_source(prototype)
   end
 end
 
+-- Quality-Skalierung: base setzt quality_affects_* erst in data-updates.lua, also
+-- NACH unserer data.lua - copyPrototype kann die Vanilla-Flags nicht erben, unsere
+-- Kopien haetten ohne diese Zuweisungen nil und Quality wirke nicht. Wir setzen pro
+-- Proto ausschliesslich das Feld, das das Vanilla-Vorbild laut base-Dump hat:
+-- locomotive -> max_speed, cargo-wagon -> inventory_size, fluid-wagon -> capacity.
+-- artillery-wagon hat in Vanilla kein quality_affects_*-Feld, bleibt deshalb leer.
+
 local highspeed_loco = copyPrototype("locomotive", "locomotive", "highspeed-locomotive")
 highspeed_loco.icon = "__base__/graphics/icons/locomotive.png"
 highspeed_loco.icon_size = 32
 highspeed_loco.color = {r = 0.10, g = 0.19, b = 0.80, a = 0.5}
 highspeed_loco.weight = 1000
 highspeed_loco.max_speed = 4 --860.km/h
+highspeed_loco.quality_affects_max_speed = true
 highspeed_loco.max_power = "4000kW"
 highspeed_loco.reversing_power_modifier = 0.5 --no effect on automatic trains
 highspeed_loco.braking_force = 90
@@ -27,6 +35,7 @@ highspeed_locomk2.icon_size = 32
 highspeed_locomk2.color = {r = 0.10, g = 0.19, b = 0.80, a = 0.5}
 highspeed_locomk2.weight = 1000
 highspeed_locomk2.max_speed = 5 --860.km/h
+highspeed_locomk2.quality_affects_max_speed = true
 highspeed_locomk2.max_power = "5000kW"
 highspeed_locomk2.reversing_power_modifier = 0.5 --no effect on automatic trains
 highspeed_locomk2.braking_force = 110
@@ -41,6 +50,7 @@ highspeed_locomk3.icon_size = 32
 highspeed_locomk3.color = {r = 0.10, g = 0.19, b = 0.80, a = 0.5}
 highspeed_locomk3.weight = 1000
 highspeed_locomk3.max_speed = 7 --860.km/h
+highspeed_locomk3.quality_affects_max_speed = true
 highspeed_locomk3.max_power = "7000kW"
 highspeed_locomk3.reversing_power_modifier = 0.5 --no effect on automatic trains
 highspeed_locomk3.braking_force = 130
@@ -55,6 +65,7 @@ highspeed_locomk4.icon_size = 32
 highspeed_locomk4.color = {r = 0.10, g = 0.19, b = 0.80, a = 0.5}
 highspeed_locomk4.weight = 1000
 highspeed_locomk4.max_speed = 50
+highspeed_locomk4.quality_affects_max_speed = true
 highspeed_locomk4.max_power = "7000kW"
 highspeed_locomk4.reversing_power_modifier = 0.5 --no effect on automatic trains
 highspeed_locomk4.braking_force = 250
@@ -67,16 +78,19 @@ local highspeed_cargo = copyPrototype("cargo-wagon", "cargo-wagon", "highspeed-c
 highspeed_cargo.braking_force = 50
 highspeed_cargo.icon = "__base__/graphics/icons/cargo-wagon.png"
 highspeed_cargo.inventory_size = 100;
+highspeed_cargo.quality_affects_inventory_size = true
 highspeed_cargo.max_health = 800
 
 local highspeed_cargomk2 = copyPrototype("cargo-wagon", "cargo-wagon", "highspeed-cargo-wagonMK2")
 highspeed_cargomk2.braking_force = 250
 highspeed_cargomk2.icon = "__base__/graphics/icons/cargo-wagon.png"
 highspeed_cargomk2.inventory_size = 100;
+highspeed_cargomk2.quality_affects_inventory_size = true
 highspeed_cargomk2.max_health = 800
 
 local highspeed_fluid = copyPrototype("fluid-wagon", "fluid-wagon", "highspeed-fluid-wagon")
 highspeed_fluid.capacity = 37000 * 3
+highspeed_fluid.quality_affects_capacity = true
 highspeed_fluid.weight = 2500
 highspeed_fluid.braking_force = 50
 highspeed_fluid.icon = "__base__/graphics/icons/fluid-wagon.png";
@@ -84,6 +98,7 @@ highspeed_fluid.max_health = 800
 
 local highspeed_fluidMK2 = copyPrototype("fluid-wagon", "fluid-wagon", "highspeed-fluid-wagonMK2")
 highspeed_fluidMK2.capacity = 37000 * 3
+highspeed_fluidMK2.quality_affects_capacity = true
 highspeed_fluidMK2.weight = 2500
 highspeed_fluidMK2.braking_force = 250
 highspeed_fluidMK2.icon = "__base__/graphics/icons/fluid-wagon.png";
@@ -93,6 +108,7 @@ local highspeed_artillery = copyPrototype("artillery-wagon", "artillery-wagon", 
 highspeed_artillery.braking_force = 50
 highspeed_artillery.icon = "__base__/graphics/icons/artillery-wagon.png"
 highspeed_artillery.max_health = 1000
+-- bewusst kein quality_affects_*: das Vanilla-Vorbild (artillery-wagon) hat keins
 
 
 data:extend({
