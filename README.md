@@ -112,6 +112,40 @@ track than with the lower tiers, so the Mk4 belongs on long, dedicated,
 well-blocked mainlines. If you want a fast network that still behaves sanely,
 stop at Mk3.
 
+## Train assistant: warning for mixed locomotive tiers
+
+The mod is mostly a data mod, but it ships a small `control.lua` that does
+nothing per tick — it hooks only three things:
+
+- **Mixed tiers in one train.** When a train is created with two or more
+  different HighSpeedTrain locomotive tiers (for example Mk1 + Mk3), a short
+  German chat warning names the tiers and the position of the train. The point:
+  a train drives at the `max_speed` of its fastest locomotive while braking
+  force and acceleration are mixed, so such a consist is hard to schedule. A
+  train on a single tier, or on vanilla locomotives, stays quiet. Factorio fires
+  `on_train_created` again whenever rolling stock is added or removed, so the
+  warning can repeat for the same train.
+- **`/hst-info`** answers with the mod version and the HighSpeedTrain locomotive
+  and wagon types seen on this map, counted at train creation, plus a hint that
+  trains which existed before the mod was installed only show up once they are
+  re-created. It answers both through `game.print` and as the command result, so
+  it also works from a server console or over RCON.
+- **Version stamp:** `on_init` and `on_configuration_changed` write
+  `storage.hst_version`. The version lives as a literal in `control.lua` (a
+  packed mod's `info.json` is not reliably readable in the control stage), so it
+  has to be bumped together with `info.json` on release.
+
+The control-stage strings are plain German literals, not locale keys: `locale/en`
+and `locale/de` still cover only the data stage (entities, items, recipes,
+technologies, settings).
+
+Three 2.1 API details are pinned by comments in `control.lua`, because they are
+all different from the pre-2.0 names: the event is
+`defines.events.on_train_created` (the un-prefixed name is nil in 2.x and
+`script.on_event` then dies at load), the wagon list is `train.carriages`
+(`cars` raises), and `LuaTrain` has no `name` field any more — which is why the
+warning points at the train's position instead of its name.
+
 ## Factorio 2.1 notes
 
 - **Train speed comes from locomotives only.** In 2.1 no wagon prototype has a
