@@ -114,10 +114,11 @@ stop at Mk3.
   `quality_affects_inventory_size` and `quality_affects_capacity`. Base sets
   those to `true` for its own prototypes in a data phase that runs *after* this
   mod's copy step (`Loading mod HighSpeedTrain (data.lua)` precedes
-  `Loading mod base (data-updates.lua)`), so the HighSpeedTrain prototypes do
-  not carry the flags today — a quality tier does not currently raise their
-  speed, inventory or capacity. Adding the flags to the mod's prototypes is a
-  small, welcome contribution.
+  `Loading mod base (data-updates.lua)`), so this mod sets the flags itself.
+  A quality tier scales HighSpeedTrain locomotive speed, cargo-wagon inventory
+  and fluid-wagon capacity just like it does for the matching vanilla wagon;
+  the artillery wagon carries no such flag because the vanilla artillery wagon
+  has none either.
 - **Recipes** use the merged 2.1 `categories` field; the pre-2.0
   `category`/`additional_categories` pair is rejected by the loader.
 
