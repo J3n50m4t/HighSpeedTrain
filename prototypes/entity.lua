@@ -64,14 +64,12 @@ highspeed_locomk4.max_health = 800
 apply_energy_source(highspeed_locomk4)
 
 local highspeed_cargo = copyPrototype("cargo-wagon", "cargo-wagon", "highspeed-cargo-wagon")
-highspeed_cargo.max_speed = 10
 highspeed_cargo.braking_force = 50
 highspeed_cargo.icon = "__base__/graphics/icons/cargo-wagon.png"
 highspeed_cargo.inventory_size = 100;
 highspeed_cargo.max_health = 800
 
 local highspeed_cargomk2 = copyPrototype("cargo-wagon", "cargo-wagon", "highspeed-cargo-wagonMK2")
-highspeed_cargomk2.max_speed = 50
 highspeed_cargomk2.braking_force = 250
 highspeed_cargomk2.icon = "__base__/graphics/icons/cargo-wagon.png"
 highspeed_cargomk2.inventory_size = 100;
@@ -80,7 +78,6 @@ highspeed_cargomk2.max_health = 800
 local highspeed_fluid = copyPrototype("fluid-wagon", "fluid-wagon", "highspeed-fluid-wagon")
 highspeed_fluid.capacity = 37000 * 3
 highspeed_fluid.weight = 2500
-highspeed_fluid.max_speed = 10
 highspeed_fluid.braking_force = 50
 highspeed_fluid.icon = "__base__/graphics/icons/fluid-wagon.png";
 highspeed_fluid.max_health = 800
@@ -88,13 +85,11 @@ highspeed_fluid.max_health = 800
 local highspeed_fluidMK2 = copyPrototype("fluid-wagon", "fluid-wagon", "highspeed-fluid-wagonMK2")
 highspeed_fluidMK2.capacity = 37000 * 3
 highspeed_fluidMK2.weight = 2500
-highspeed_fluidMK2.max_speed = 50
 highspeed_fluidMK2.braking_force = 250
 highspeed_fluidMK2.icon = "__base__/graphics/icons/fluid-wagon.png";
 highspeed_fluidMK2.max_health = 800
 
 local highspeed_artillery = copyPrototype("artillery-wagon", "artillery-wagon", "highspeed-artillery-wagon")
-highspeed_artillery.max_speed = 10
 highspeed_artillery.braking_force = 50
 highspeed_artillery.icon = "__base__/graphics/icons/artillery-wagon.png"
 highspeed_artillery.max_health = 1000
