@@ -2,7 +2,7 @@ local free_mode = settings.startup["highspeedtrain-free-mode"].value
 
 -- Eigene Tech-Icons: jedes Tech zeigt das Icon des Fahrzeugs, das es freischaltet,
 -- im Stufen-Ton der Farb-Rampe (Mk1 Blau, Mk2 Cyan, Mk3 Orange, Mk4 Rot; Wagen:
--- Cargo Gelb/Rot, Fluid Blau/Gruen, Artillerie Lila). Identische RGB wie die
+-- Cargo Gelb/Rot/Magenta, Fluid Blau/Gruen/Teal, Artillerie Lila). Identische RGB wie die
 -- Icon-Tints in item.lua/recipe.lua und die color-Werte in entity.lua, damit
 -- Icon-Ton == Fahrzeugfarbe ist. technology.lua wird in data.lua ZUERST require't,
 -- darf also nicht auf Variablen der spaeteren Dateien zugreifen -> eigene Rampe.
@@ -26,6 +26,7 @@ local tech_tints = {
   cargo_wagon_mk3 = {r = 0.92, g = 0.30, b = 0.70, a = 1.0},
   fluid_wagon_mk1 = {r = 0.18, g = 0.45, b = 0.95, a = 1.0},
   fluid_wagon_mk2 = {r = 0.20, g = 0.75, b = 0.35, a = 1.0},
+  fluid_wagon_mk3 = {r = 0.05, g = 0.60, b = 0.50, a = 1.0},
   artillery_wagon = {r = 0.58, g = 0.32, b = 0.86, a = 1.0}
 }
 
@@ -306,6 +307,39 @@ local highspeedfluidmk2 = {
 }
 apply_technology_mode(highspeedfluidmk2)
 
+-- Mk3 haengt an Mk2 und an der Vanilla-Technik "speed-module-3", damit die Zutaten des
+-- Rezepts (10x speed-module-3) zum Freischaltzeitpunkt schon herstellbar sind. Das
+-- Unit-Muster von highspeedfluidmk2 ist um 25 % erhoeht (count 200 -> 250, je Pack 20 -> 25).
+local highspeedfluidmk3 = {
+  type = "technology",
+  name = "highspeedfluidmk3",
+  icons = {
+    {icon = fluid_wagon_icon, icon_size = tech_icon_size, tint = tech_tints.fluid_wagon_mk3}
+  },
+  prerequisites = {"highspeedfluidmk2", "speed-module-3"},
+  effects = {
+    {
+      type = "unlock-recipe",
+      recipe = "highspeed-fluid-wagonMK3"
+    }
+  },
+  unit = {
+    count = 250,
+    ingredients = {
+      {"automation-science-pack", 25},
+      {"logistic-science-pack", 25},
+      {"chemical-science-pack", 25},
+      {"military-science-pack", 25},
+      {"production-science-pack", 25},
+      {"utility-science-pack", 25},
+      {"space-science-pack", 25}
+    },
+    time = 30
+  },
+  order = "c-g-c"
+}
+apply_technology_mode(highspeedfluidmk3)
+
 local highspeedartillery = {
   type = "technology",
   name = "highspeedartillery",
@@ -345,5 +379,6 @@ data:extend({
   highspeedcargomk3,
   highspeedfluid,
   highspeedfluidmk2,
+  highspeedfluidmk3,
   highspeedartillery
 })

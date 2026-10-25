@@ -179,6 +179,18 @@ highspeed_fluidMK2.braking_force = 250
 highspeed_fluidMK2.icon = "__base__/graphics/icons/fluid-wagon.png";
 highspeed_fluidMK2.max_health = 800
 
+-- Mk3: doppelte Kapazitaet (222000 = 2x der 111000 von Mk1/Mk2, 4.44x Vanilla-50000).
+-- weight/braking_force/max_health wie Mk2 (2500/250/800), weil Wagen in 2.1 keinen
+-- max_speed mehr haben. Auch hier setzt die Mod den quality_affects_capacity-Flag
+-- selbst (base setzt ihn erst in data-updates.lua, nach unserer data.lua).
+local highspeed_fluidMK3 = copyPrototype("fluid-wagon", "fluid-wagon", "highspeed-fluid-wagonMK3")
+highspeed_fluidMK3.capacity = 37000 * 6 -- 222000
+highspeed_fluidMK3.quality_affects_capacity = true
+highspeed_fluidMK3.weight = 2500
+highspeed_fluidMK3.braking_force = 250
+highspeed_fluidMK3.icon = "__base__/graphics/icons/fluid-wagon.png";
+highspeed_fluidMK3.max_health = 800
+
 local highspeed_artillery = copyPrototype("artillery-wagon", "artillery-wagon", "highspeed-artillery-wagon")
 highspeed_artillery.braking_force = 50
 highspeed_artillery.icon = "__base__/graphics/icons/artillery-wagon.png"
@@ -196,5 +208,6 @@ data:extend({
   highspeed_cargomk3,
   highspeed_fluid,
   highspeed_fluidMK2,
+  highspeed_fluidMK3,
   highspeed_artillery
 })
