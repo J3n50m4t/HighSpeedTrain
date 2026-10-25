@@ -61,7 +61,9 @@ unlock state lines up again after an update.
 ## Research and crafting (default mode)
 
 Technology tree — the technologies are named after the tier, the recipes after the
-entity, so `highspeedtrain` unlocks the `highspeed-locomotive` recipe:
+entity, so `highspeedtrain` unlocks the `highspeed-locomotive` recipe. Each
+technology carries its own icon: the vehicle it unlocks, tinted in that tier's
+colour, so the tiers are easy to tell apart in the research tree:
 
 ```
 braking-force-2 ─► highspeedtrain ─┬─► highspeedtrainmk2 ─► highspeedtrainmk3 ─► highspeedtrainmk4
