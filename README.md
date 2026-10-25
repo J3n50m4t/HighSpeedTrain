@@ -112,6 +112,40 @@ track than with the lower tiers, so the Mk4 belongs on long, dedicated,
 well-blocked mainlines. If you want a fast network that still behaves sanely,
 stop at Mk3.
 
+## Train assistant: warning for mixed locomotive tiers
+
+The mod is mostly a data mod, but it ships a small `control.lua` that does
+nothing per tick — it hooks only three things:
+
+- **Mixed tiers in one train.** When a train is created with two or more
+  different HighSpeedTrain locomotive tiers (for example Mk1 + Mk3), a short
+  German chat warning names the tiers and the position of the train. The point:
+  a train drives at the `max_speed` of its fastest locomotive while braking
+  force and acceleration are mixed, so such a consist is hard to schedule. A
+  train on a single tier, or on vanilla locomotives, stays quiet. Factorio fires
+  `on_train_created` again whenever rolling stock is added or removed, so the
+  warning can repeat for the same train.
+- **`/hst-info`** answers with the mod version and the HighSpeedTrain locomotive
+  and wagon types seen on this map, counted at train creation, plus a hint that
+  trains which existed before the mod was installed only show up once they are
+  re-created. It answers both through `game.print` and as the command result, so
+  it also works from a server console or over RCON.
+- **Version stamp:** `on_init` and `on_configuration_changed` write
+  `storage.hst_version`. The version lives as a literal in `control.lua` (a
+  packed mod's `info.json` is not reliably readable in the control stage), so it
+  has to be bumped together with `info.json` on release.
+
+The control-stage strings are plain German literals, not locale keys: `locale/en`
+and `locale/de` still cover only the data stage (entities, items, recipes,
+technologies, settings).
+
+Three 2.1 API details are pinned by comments in `control.lua`, because they are
+all different from the pre-2.0 names: the event is
+`defines.events.on_train_created` (the un-prefixed name is nil in 2.x and
+`script.on_event` then dies at load), the wagon list is `train.carriages`
+(`cars` raises), and `LuaTrain` has no `name` field any more — which is why the
+warning points at the train's position instead of its name.
+
 ## Factorio 2.1 notes
 
 - **Train speed comes from locomotives only.** In 2.1 no wagon prototype has a
@@ -148,11 +182,19 @@ FACTORIO_BIN="$HOME/Library/Application Support/Steam/steamapps/common/Factorio/
   ./scripts/smoke-test.sh
 ```
 
-`scripts/smoke-test.sh` checks `info.json`, lints Lua syntax, packs the current
-checkout into a temporary mods directory and loads it through the data stage of
-a headless/isolated Factorio, then fails if the log contains errors or if the
-mod never appeared in the load sequence. Without `FACTORIO_BIN` it downloads the
-current stable headless tarball anonymously, which is what CI does. The
+`scripts/smoke-test.sh` runs four steps: check `info.json`, lint Lua syntax, pack
+the current checkout into a temporary mods directory, then load that pack twice
+in an isolated, throw-away Factorio. Step 3 is the data stage (`--dump-data` on a
+GUI client such as the Steam build, `--create` on a headless build) and step 4 is
+the control stage (`--create`, which loads `control.lua`, registers the event
+handlers and commands, and runs migrations). The runtime stage fails on a
+non-zero exit, on error signatures in the log **or** on stdout, and when the
+mod's `control.lua` never shows up in the load sequence — it is the step that
+catches Lua which compiles but dies at load, such as a renamed 2.x event or a
+renamed API field. Each Factorio stage writes into its own directory, so neither
+stage can hide the other's log, and a binary that cannot do `--create` says so
+loudly instead of passing silently. Without `FACTORIO_BIN` the script downloads
+the current stable headless tarball anonymously, which is what CI does. The
 smoke-test workflow (`.github/workflows/smoke-test.yml`) runs `luacheck .` and
 the smoke test on pushes to `main` and `dev`, on pull requests and manually;
 releases to the Mod Portal happen from `main` via `.github/workflows/release.yml`
