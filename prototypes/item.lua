@@ -31,7 +31,9 @@ apply_tinted_icon(highspeed_cargo, "__base__/graphics/icons/cargo-wagon.png", {r
 highspeed_cargo.order = "a[train-system]-f[highspeed-wagon]"
 
 local highspeed_cargomk2 = copyPrototype("item-with-entity-data", "cargo-wagon", "highspeed-cargo-wagonMK2")
-apply_tinted_icon(highspeed_cargomk2, "__base__/graphics/icons/cargo-wagon.png", {r = 0.93, g = 0.25, b = 0.23, a = 1.0})
+apply_tinted_icon(highspeed_cargomk2, "__base__/graphics/icons/cargo-wagon.png", {
+  r = 0.93, g = 0.25, b = 0.23, a = 1.0
+})
 highspeed_cargomk2.order = "a[train-system]-f[highspeed-wagon]"
 
 local highspeed_fluid = copyPrototype("item-with-entity-data", "fluid-wagon", "highspeed-fluid-wagon")
@@ -39,11 +41,15 @@ apply_tinted_icon(highspeed_fluid, "__base__/graphics/icons/fluid-wagon.png", {r
 highspeed_fluid.order = "a[train-system]-f[highspeed-cluid-wagon]"
 
 local highspeed_fluidmk2 = copyPrototype("item-with-entity-data", "fluid-wagon", "highspeed-fluid-wagonMK2")
-apply_tinted_icon(highspeed_fluidmk2, "__base__/graphics/icons/fluid-wagon.png", {r = 0.20, g = 0.75, b = 0.35, a = 1.0})
+apply_tinted_icon(highspeed_fluidmk2, "__base__/graphics/icons/fluid-wagon.png", {
+  r = 0.20, g = 0.75, b = 0.35, a = 1.0
+})
 highspeed_fluidmk2.order = "a[train-system]-f[highspeed-cluid-wagon]"
 
 local highspeed_artillery = copyPrototype("item-with-entity-data", "artillery-wagon", "highspeed-artillery-wagon")
-apply_tinted_icon(highspeed_artillery, "__base__/graphics/icons/artillery-wagon.png", {r = 0.58, g = 0.32, b = 0.86, a = 1.0})
+apply_tinted_icon(highspeed_artillery, "__base__/graphics/icons/artillery-wagon.png", {
+  r = 0.58, g = 0.32, b = 0.86, a = 1.0
+})
 highspeed_artillery.order = "a[train-system]-f[highspeed-artillery-wagon]"
 
 

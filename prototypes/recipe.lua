@@ -72,7 +72,9 @@ highspeed_cargomk2.ingredients = {
   {type = "item", name = "speed-module", amount = 10},
 }
 apply_recipe_mode(highspeed_cargomk2)
-apply_tinted_icon(highspeed_cargomk2, "__base__/graphics/icons/cargo-wagon.png", {r = 0.93, g = 0.25, b = 0.23, a = 1.0})
+apply_tinted_icon(highspeed_cargomk2, "__base__/graphics/icons/cargo-wagon.png", {
+  r = 0.93, g = 0.25, b = 0.23, a = 1.0
+})
 
 local highspeed_fluid = copyPrototype("recipe", "fluid-wagon", "highspeed-fluid-wagon")
 highspeed_fluid.categories = { "crafting-with-fluid" }  -- 2.1: category/additional_categories merged into categories
@@ -94,7 +96,9 @@ highspeed_fluidmk2.ingredients = {
   {type = "fluid", name = "lubricant", amount = 100}
 }
 apply_recipe_mode(highspeed_fluidmk2)
-apply_tinted_icon(highspeed_fluidmk2, "__base__/graphics/icons/fluid-wagon.png", {r = 0.20, g = 0.75, b = 0.35, a = 1.0})
+apply_tinted_icon(highspeed_fluidmk2, "__base__/graphics/icons/fluid-wagon.png", {
+  r = 0.20, g = 0.75, b = 0.35, a = 1.0
+})
 
 local highspeed_artillery = copyPrototype("recipe", "artillery-wagon", "highspeed-artillery-wagon")
 highspeed_artillery.ingredients = {
@@ -104,7 +108,9 @@ highspeed_artillery.ingredients = {
   {type = "item", name = "speed-module-2", amount = 10}
 }
 apply_recipe_mode(highspeed_artillery)
-apply_tinted_icon(highspeed_artillery, "__base__/graphics/icons/artillery-wagon.png", {r = 0.58, g = 0.32, b = 0.86, a = 1.0})
+apply_tinted_icon(highspeed_artillery, "__base__/graphics/icons/artillery-wagon.png", {
+  r = 0.58, g = 0.32, b = 0.86, a = 1.0
+})
 
 data:extend({
   highspeed_loco,

@@ -1,7 +1,7 @@
-for i, force in pairs(game.forces) do 
+for i, force in pairs(game.forces) do
   force.reset_recipes()
   force.reset_technologies()
-  
+
   if force.technologies["highspeedtrain"].researched then
     force.recipes["highspeed-locomotive"].enabled = true
   else
@@ -27,5 +27,5 @@ for i, force in pairs(game.forces) do
   else
     force.recipes["highspeed-cargo-wagon"].enabled = false
   end
-  
+
 end
