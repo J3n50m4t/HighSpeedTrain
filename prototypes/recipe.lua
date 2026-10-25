@@ -78,6 +78,21 @@ apply_tinted_icon(highspeed_cargomk2, "__base__/graphics/icons/cargo-wagon.png",
   r = 0.93, g = 0.25, b = 0.23, a = 1.0
 })
 
+-- Mk3 baut auf Mk2 auf; die 10x speed-module-3 passen zur Tech-Voraussetzung
+-- "speed-module-3". energy_required 10 s statt der geerbten 1 s: der Aufwand fuer vier
+-- Mk2-Waggons plus 500 Processing Units soll in der Fertigungszeit sichtbar sein.
+local highspeed_cargomk3 = copyPrototype("recipe", "cargo-wagon", "highspeed-cargo-wagonMK3")
+highspeed_cargomk3.ingredients = {
+  {type = "item", name = "highspeed-cargo-wagonMK2", amount = 4},
+  {type = "item", name = "processing-unit", amount = 500},
+  {type = "item", name = "speed-module-3", amount = 10},
+}
+highspeed_cargomk3.energy_required = 10
+apply_recipe_mode(highspeed_cargomk3)
+apply_tinted_icon(highspeed_cargomk3, "__base__/graphics/icons/cargo-wagon.png", {
+  r = 0.92, g = 0.30, b = 0.70, a = 1.0
+})
+
 local highspeed_fluid = copyPrototype("recipe", "fluid-wagon", "highspeed-fluid-wagon")
 highspeed_fluid.categories = { "crafting-with-fluid" }  -- 2.1: category/additional_categories merged into categories
 highspeed_fluid.ingredients = {
@@ -121,6 +136,7 @@ data:extend({
   highspeed_locomk4,
   highspeed_cargo,
   highspeed_cargomk2,
+  highspeed_cargomk3,
   highspeed_fluid,
   highspeed_fluidmk2,
   highspeed_artillery
