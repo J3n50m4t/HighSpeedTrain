@@ -27,7 +27,11 @@ local tech_tints = {
   fluid_wagon_mk1 = {r = 0.18, g = 0.45, b = 0.95, a = 1.0},
   fluid_wagon_mk2 = {r = 0.20, g = 0.75, b = 0.35, a = 1.0},
   fluid_wagon_mk3 = {r = 0.05, g = 0.60, b = 0.50, a = 1.0},
-  artillery_wagon = {r = 0.58, g = 0.32, b = 0.86, a = 1.0}
+  artillery_wagon = {r = 0.58, g = 0.32, b = 0.86, a = 1.0},
+  -- Artillerie Mk2: dunkles Weinrot. Kleinstabstand zu einem bestehenden Rampenton ist
+  -- 0.39 (zu Lok-Mk4-Rot), zur Mk1-Artillerie-Lila 0.62. Innerhalb der bestehenden
+  -- Rampe betraegt der kleinste Abstand 0.21, der neue Ton ist also eindeutig verschieden.
+  artillery_wagon_mk2 = {r = 0.55, g = 0.10, b = 0.35, a = 1.0}
 }
 
 local function apply_technology_mode(technology)
@@ -369,6 +373,57 @@ local highspeedartillery = {
 }
 apply_technology_mode(highspeedartillery)
 
+-- Artillerie Mk2: haengt an highspeedartillery und an der Vanilla-Technik
+-- 'artillery-shell-speed-1'. Beide Namen sind im Base-Dump nachgesehen: die im Task
+-- vorgeschlagene 'explosion-ammo' existiert in 2.1 nicht (kein technology-Proto dieses
+-- Namens), 'uranium-ammo' zwar schon, passt aber nicht - unsere Munition nutzt kein Uran.
+-- 'artillery-shell-speed-1' (Vorbedingung 'artillery', unendlich forschbar, ab Level 1
+-- 1000 Labs) modifiziert mit effect-Typ 'gun-speed' auf ammo_category 'artillery-shell'
+-- genau die Achse, die auch unser Mk2-Geschuetz verkuerzt (cooldown 200 -> 150 Ticks),
+-- und passt damit zur schnelleren Salve plus der Granate mit doppelter Sprengwirkung.
+-- Unit-Muster von highspeedartillery um 25 % erhoeht: count 250 -> 313 (250 x 1,25 =
+-- 312,5, aufgerundet) und je Packung 2 -> 3 (2 x 1,25 = 2,5, aufgerundet - ein halbes
+-- Forschungspaket pro Durchlauf gibt es in 2.1 nicht). Die 6 Packungsarten von
+-- highspeedartillery bleiben unveraendert uebernommen und werden nur skaliert;
+-- space-science-pack kommt nicht dazu, obwohl die Vanilla-Vorbedingung artillerie-eigene
+-- Pakete verlangt (artillery-shell-speed-1 nutzt selbst space- und
+-- metallurgic-science-pack). time bleibt 45 wie bei highspeedartillery.
+-- Effekte: zwei unlock-recipe-Effekte, exakt wie base seine Vanilla-Technik 'artillery'
+-- betreibt (die schaltet auch wagon, turret und shell gleichzeitig frei); rezept.enabled
+-- laesst die Mod nie selbst, das uebernimmt apply_recipe_mode zusammen mit dem Unlock.
+local highspeedartillerymk2 = {
+  type = "technology",
+  name = "highspeedartillerymk2",
+  icons = {
+    {icon = artillery_wagon_icon, icon_size = tech_icon_size, tint = tech_tints.artillery_wagon_mk2}
+  },
+  prerequisites = {"highspeedartillery", "artillery-shell-speed-1"},
+  effects = {
+    {
+      type = "unlock-recipe",
+      recipe = "highspeed-artillery-wagonMK2"
+    },
+    {
+      type = "unlock-recipe",
+      recipe = "highspeed-artillery-shell-mk2"
+    }
+  },
+  unit = {
+    count = 313,
+    ingredients = {
+      {"automation-science-pack", 3},
+      {"logistic-science-pack", 3},
+      {"chemical-science-pack", 3},
+      {"military-science-pack", 3},
+      {"production-science-pack", 3},
+      {"utility-science-pack", 3}
+    },
+    time = 45
+  },
+  order = "c-g-c"
+}
+apply_technology_mode(highspeedartillerymk2)
+
 data:extend({
   highspeedtrain,
   highspeedtrainmk2,
@@ -380,5 +435,6 @@ data:extend({
   highspeedfluid,
   highspeedfluidmk2,
   highspeedfluidmk3,
-  highspeedartillery
+  highspeedartillery,
+  highspeedartillerymk2
 })

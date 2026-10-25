@@ -147,6 +147,45 @@ apply_tinted_icon(highspeed_artillery, "__base__/graphics/icons/artillery-wagon.
   r = 0.58, g = 0.32, b = 0.86, a = 1.0
 })
 
+-- Artillerie Mk2: baut wie bei den anderen Stufen auf dem Vorgaenger auf (1 Mk1-Wagen).
+-- processing-unit und electric-engine-unit gegenueber dem Mk1-Rezept verdoppelt
+-- (40 -> 80 bzw. 20 -> 40), speed-module-2 bleibt bei 10. Das Vanilla-Artilleriewagen-
+-- Rezept aus dem Dump (engine-unit 60, tungsten-plate 60, refined-concrete 60,
+-- iron-gear-wheel 40, processing-unit 10) kennt selbst keine Module, die Steigerung ist
+-- also mod-intern wie bei den anderen Mk2-Stufen.
+local highspeed_artillerymk2 = copyPrototype("recipe", "artillery-wagon", "highspeed-artillery-wagonMK2")
+highspeed_artillerymk2.ingredients = {
+  {type = "item", name = "highspeed-artillery-wagon", amount = 1},
+  {type = "item", name = "processing-unit", amount = 80},
+  {type = "item", name = "electric-engine-unit", amount = 40},
+  {type = "item", name = "speed-module-2", amount = 10}
+}
+apply_recipe_mode(highspeed_artillerymk2)
+apply_tinted_icon(highspeed_artillerymk2, "__base__/graphics/icons/artillery-wagon.png", {
+  r = 0.55, g = 0.10, b = 0.35, a = 1.0
+})
+
+-- Mk2-Granate: Zutaten ausschliesslich aus dem Vanilla-artillery-shell-Rezept aus dem
+-- Base-Dump abgeleitet (radar 1, calcite 1, tungsten-plate 4, explosives 8; 15 s). Die
+-- Mk2-Munition hat die doppelte Sprengladung (siehe highspeed-artillery-projectile-mk2),
+-- also genau dort die doppelte Menge explosives (8 -> 16). radar (Zuendung und
+-- Zielfuehrung), calcite und die Wolfram-Huelse bleiben unveraendert, weil Zuendung und
+-- Huelle dieselben bleiben - eine zusaetzliche oder ausgetauschte Zutat waere erfunden
+-- und bleibt deshalb draussen. energy_required 30 s = 2x Vanilla, weil die doppelte
+-- Ladung auch den doppelten Mischaufwand bedeutet.
+local highspeed_artillery_shellmk2 = copyPrototype("recipe", "artillery-shell", "highspeed-artillery-shell-mk2")
+highspeed_artillery_shellmk2.ingredients = {
+  {type = "item", name = "radar", amount = 1},
+  {type = "item", name = "calcite", amount = 1},
+  {type = "item", name = "tungsten-plate", amount = 4},
+  {type = "item", name = "explosives", amount = 16}
+}
+highspeed_artillery_shellmk2.energy_required = 30
+apply_recipe_mode(highspeed_artillery_shellmk2)
+apply_tinted_icon(highspeed_artillery_shellmk2, "__base__/graphics/icons/artillery-shell.png", {
+  r = 0.55, g = 0.10, b = 0.35, a = 1.0
+})
+
 data:extend({
   highspeed_loco,
   highspeed_locomk2,
@@ -158,5 +197,7 @@ data:extend({
   highspeed_fluid,
   highspeed_fluidmk2,
   highspeed_fluidmk3,
-  highspeed_artillery
+  highspeed_artillery,
+  highspeed_artillerymk2,
+  highspeed_artillery_shellmk2
 })
