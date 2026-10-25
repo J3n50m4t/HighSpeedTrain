@@ -117,6 +117,24 @@ apply_tinted_icon(highspeed_fluidmk2, "__base__/graphics/icons/fluid-wagon.png",
   r = 0.20, g = 0.75, b = 0.35, a = 1.0
 })
 
+-- Mk3 baut auf Mk2 auf und bleibt beim crafting-with-fluid-Muster der Fluid-Stufen
+-- (100 Lubricant wie Mk1/Mk2). Die 10x speed-module-3 passen zur Tech-Voraussetzung
+-- "speed-module-3". energy_required 10 s statt der geerbten 1.5 s: der Aufwand fuer
+-- vier Mk2-Waggons plus 500 Processing Units soll in der Fertigungszeit sichtbar sein.
+local highspeed_fluidmk3 = copyPrototype("recipe", "fluid-wagon", "highspeed-fluid-wagonMK3")
+highspeed_fluidmk3.categories = { "crafting-with-fluid" }
+highspeed_fluidmk3.ingredients = {
+  {type = "item", name = "highspeed-fluid-wagonMK2", amount = 4},
+  {type = "item", name = "processing-unit", amount = 500},
+  {type = "item", name = "speed-module-3", amount = 10},
+  {type = "fluid", name = "lubricant", amount = 100}
+}
+highspeed_fluidmk3.energy_required = 10
+apply_recipe_mode(highspeed_fluidmk3)
+apply_tinted_icon(highspeed_fluidmk3, "__base__/graphics/icons/fluid-wagon.png", {
+  r = 0.05, g = 0.60, b = 0.50, a = 1.0
+})
+
 local highspeed_artillery = copyPrototype("recipe", "artillery-wagon", "highspeed-artillery-wagon")
 highspeed_artillery.ingredients = {
   {type = "item", name = "artillery-wagon", amount = 1},
@@ -139,5 +157,6 @@ data:extend({
   highspeed_cargomk3,
   highspeed_fluid,
   highspeed_fluidmk2,
+  highspeed_fluidmk3,
   highspeed_artillery
 })

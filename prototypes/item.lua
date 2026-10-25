@@ -56,6 +56,14 @@ apply_tinted_icon(highspeed_fluidmk2, "__base__/graphics/icons/fluid-wagon.png",
 })
 highspeed_fluidmk2.order = "a[train-system]-f[highspeed-cluid-wagon]"
 
+-- Mk3-Ton Teal: hebt sich von allen bestehenden Toenen ab (Loks Blau/Cyan/Orange/Rot,
+-- Cargo Gelb/Rot/Magenta, Fluid Mk1 Blau und Mk2 Gruen, Artillerie Lila).
+local highspeed_fluidmk3 = copyPrototype("item-with-entity-data", "fluid-wagon", "highspeed-fluid-wagonMK3")
+apply_tinted_icon(highspeed_fluidmk3, "__base__/graphics/icons/fluid-wagon.png", {
+  r = 0.05, g = 0.60, b = 0.50, a = 1.0
+})
+highspeed_fluidmk3.order = "a[train-system]-f[highspeed-cluid-wagon]"
+
 local highspeed_artillery = copyPrototype("item-with-entity-data", "artillery-wagon", "highspeed-artillery-wagon")
 apply_tinted_icon(highspeed_artillery, "__base__/graphics/icons/artillery-wagon.png", {
   r = 0.58, g = 0.32, b = 0.86, a = 1.0
@@ -73,5 +81,6 @@ data:extend({
   highspeed_cargomk3,
   highspeed_fluid,
   highspeed_fluidmk2,
+  highspeed_fluidmk3,
   highspeed_artillery
 })
