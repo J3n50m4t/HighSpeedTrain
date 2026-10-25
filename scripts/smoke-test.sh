@@ -58,24 +58,24 @@ echo "Packed: ${NAME}_${VERSION}.zip"
 
 echo "== [3/3] Headless data-stage load =="
 BIN="${FACTORIO_BIN:-}"
-if [ -z "$BIN" ] && [ -n "${FACTORIO_USERNAME:-}" ] && [ -n "${FACTORIO_TOKEN:-}" ]; then
-  # Download the newest headless of the same factorio_version series (e.g. 2.1).
-  SERIES=$(sed -n 's/.*"factorio_version": *"\([0-9]*\.[0-9]*\).*/\1/p' info.json)
-  echo "Downloading latest Factorio $SERIES headless..."
-  curl -fsSL -u "${FACTORIO_USERNAME}:${FACTORIO_TOKEN}" \
-    "https://portal.factorio.com/releases/download/headless?m=$SERIES" -o "$WORK/factorio.tar.xz"
+if [ -z "$BIN" ]; then
+  # Current stable headless tarball is publicly downloadable (no account).
+  echo "Downloading current stable Factorio headless (linux64, anonymous)..."
+  curl -fsSL "https://factorio.com/get-download/stable/headless/linux64" -o "$WORK/factorio.tar.xz"
   mkdir -p "$WORK/fbin"
   tar -xJf "$WORK/factorio.tar.xz" -C "$WORK/fbin"
-  BIN="$WORK/fbin/bin/x64/factorio"
-fi
-
-if [ -z "$BIN" ]; then
-  echo "::warning::No Factorio binary (set FACTORIO_BIN or secrets FACTORIO_USERNAME/FACTORIO_TOKEN). Static checks only."
-  exit 0
+  BIN=$(find "$WORK/fbin" -type f -name factorio -path "*/bin/*" | head -n1)
+  [ -n "$BIN" ] || { echo "::error::Downloaded archive contains no factorio binary"; exit 1; }
+  chmod +x "$BIN"
 fi
 
 GAME_VERSION=$("$BIN" --version | head -n1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1) || GAME_VERSION="unknown"
 echo "Game version: $GAME_VERSION"
+SERIES=$(sed -n 's/.*"factorio_version": *"\([0-9]*\.[0-9]*\).*/\1/p' info.json)
+case "$GAME_VERSION" in
+  "$SERIES".*) : ;;
+  *) echo "::error::info.json targets Factorio $SERIES but binary is $GAME_VERSION"; exit 1 ;;
+esac
 # 2.1 mod-list format: name+enabled only (version fields cause pattern errors);
 # expansion cores (quality, space-age, ...) are auto-added by the game.
 cat > "$WORK/mods/mod-list.json" <<EOF

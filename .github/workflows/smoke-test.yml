@@ -19,6 +19,3 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y luajit zip
       - name: Run smoke test
         run: ./scripts/smoke-test.sh
-        env:
-          FACTORIO_USERNAME: ${{ secrets.FACTORIO_USERNAME }}
-          FACTORIO_TOKEN: ${{ secrets.FACTORIO_TOKEN }}
