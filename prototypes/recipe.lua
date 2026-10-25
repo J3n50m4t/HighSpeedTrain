@@ -20,6 +20,8 @@ local function apply_tinted_icon(prototype, icon_path, tint)
   }
 end
 
+-- Die vier Lok-Tints folgen der Mk-Rampe aus entity.lua (identische RGB, hier alpha 1.0),
+-- damit Icon-Ton == Fahrzeugfarbe auf der Karte ist. Wagen-Tints bleiben unveraendert.
 local highspeed_loco = copyPrototype("recipe", "locomotive", "highspeed-locomotive")
 highspeed_loco.ingredients = {
   {type = "item", name = "locomotive", amount = 1},
@@ -27,7 +29,7 @@ highspeed_loco.ingredients = {
   {type = "item", name = "speed-module", amount = 10}
 }
 apply_recipe_mode(highspeed_loco)
-apply_tinted_icon(highspeed_loco, "__base__/graphics/icons/locomotive.png", {r = 1.0, g = 0.82, b = 0.18, a = 1.0})
+apply_tinted_icon(highspeed_loco, "__base__/graphics/icons/locomotive.png", {r = 0.10, g = 0.19, b = 0.80, a = 1.0})
 
 local highspeed_locomk2 = copyPrototype("recipe", "locomotive", "highspeed-locomotiveMK2")
 highspeed_locomk2.ingredients = {
@@ -36,7 +38,7 @@ highspeed_locomk2.ingredients = {
   {type = "item", name = "speed-module-2", amount = 10}
 }
 apply_recipe_mode(highspeed_locomk2)
-apply_tinted_icon(highspeed_locomk2, "__base__/graphics/icons/locomotive.png", {r = 0.93, g = 0.25, b = 0.23, a = 1.0})
+apply_tinted_icon(highspeed_locomk2, "__base__/graphics/icons/locomotive.png", {r = 0.05, g = 0.55, b = 0.75, a = 1.0})
 
 local highspeed_locomk3 = copyPrototype("recipe", "locomotive", "highspeed-locomotiveMK3")
 highspeed_locomk3.ingredients = {
@@ -45,7 +47,7 @@ highspeed_locomk3.ingredients = {
   {type = "item", name = "speed-module-2", amount = 10}
 }
 apply_recipe_mode(highspeed_locomk3)
-apply_tinted_icon(highspeed_locomk3, "__base__/graphics/icons/locomotive.png", {r = 0.18, g = 0.45, b = 0.95, a = 1.0})
+apply_tinted_icon(highspeed_locomk3, "__base__/graphics/icons/locomotive.png", {r = 0.85, g = 0.45, b = 0.10, a = 1.0})
 
 local highspeed_locomk4 = copyPrototype("recipe", "locomotive", "highspeed-locomotiveMK4")
 highspeed_locomk4.ingredients = {
@@ -54,7 +56,7 @@ highspeed_locomk4.ingredients = {
   {type = "item", name = "speed-module-3", amount = 10}
 }
 apply_recipe_mode(highspeed_locomk4)
-apply_tinted_icon(highspeed_locomk4, "__base__/graphics/icons/locomotive.png", {r = 0.20, g = 0.75, b = 0.35, a = 1.0})
+apply_tinted_icon(highspeed_locomk4, "__base__/graphics/icons/locomotive.png", {r = 0.85, g = 0.10, b = 0.10, a = 1.0})
 
 local highspeed_cargo = copyPrototype("recipe", "cargo-wagon", "highspeed-cargo-wagon")
 highspeed_cargo.ingredients = {
