@@ -182,11 +182,19 @@ FACTORIO_BIN="$HOME/Library/Application Support/Steam/steamapps/common/Factorio/
   ./scripts/smoke-test.sh
 ```
 
-`scripts/smoke-test.sh` checks `info.json`, lints Lua syntax, packs the current
-checkout into a temporary mods directory and loads it through the data stage of
-a headless/isolated Factorio, then fails if the log contains errors or if the
-mod never appeared in the load sequence. Without `FACTORIO_BIN` it downloads the
-current stable headless tarball anonymously, which is what CI does. The
+`scripts/smoke-test.sh` runs four steps: check `info.json`, lint Lua syntax, pack
+the current checkout into a temporary mods directory, then load that pack twice
+in an isolated, throw-away Factorio. Step 3 is the data stage (`--dump-data` on a
+GUI client such as the Steam build, `--create` on a headless build) and step 4 is
+the control stage (`--create`, which loads `control.lua`, registers the event
+handlers and commands, and runs migrations). The runtime stage fails on a
+non-zero exit, on error signatures in the log **or** on stdout, and when the
+mod's `control.lua` never shows up in the load sequence — it is the step that
+catches Lua which compiles but dies at load, such as a renamed 2.x event or a
+renamed API field. Each Factorio stage writes into its own directory, so neither
+stage can hide the other's log, and a binary that cannot do `--create` says so
+loudly instead of passing silently. Without `FACTORIO_BIN` the script downloads
+the current stable headless tarball anonymously, which is what CI does. The
 smoke-test workflow (`.github/workflows/smoke-test.yml`) runs `luacheck .` and
 the smoke test on pushes to `main` and `dev`, on pull requests and manually;
 releases to the Mod Portal happen from `main` via `.github/workflows/release.yml`
