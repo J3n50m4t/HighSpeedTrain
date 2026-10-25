@@ -15,8 +15,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-      - name: Install LuaJIT and luacheck
-        run: sudo apt-get update && sudo apt-get install -y luajit zip luacheck
+      - name: Install LuaJIT, zip and luacheck
+        run: |
+          sudo apt-get update
+          # Ubuntu 24.04 (ubuntu-latest) hat kein luacheck-Apt-Paket mehr;
+          # daher luarocks-Nachinstallation (luacheck ist reines Lua).
+          sudo apt-get install -y luajit zip luarocks
+          sudo luarocks install luacheck
       - name: Luacheck
         run: luacheck .
       - name: Run smoke test
