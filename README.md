@@ -26,7 +26,9 @@ fastest locomotive. The vanilla 2.1 locomotive sits at 1.2, which is what the
 
 For reference, vanilla: `max_speed` 1.2, 600 kW, braking force 10, weight 2000,
 health 1000. The high-speed locos are lighter, stronger-powered and brake far
-harder, but are slightly less tough.
+harder, but are slightly less tough. The Mk4 value is the 100 % reference: the
+`highspeedtrain-mk4-speed-percent` startup setting scales it down — see
+"Startup settings".
 
 ## Wagons
 
@@ -44,8 +46,9 @@ Wagon capacity and inventory use the live 2.1 fields (`capacity`,
 
 ## Startup settings
 
-Both are startup settings: switch them on when you create the map. Verified by
-running the data stage with both switched on. The shipped migration
+All three are startup settings: set them when you create the map. The slider is
+verified against the game's data dump at 100 % and at 40 %; the two switches
+were verified in their own data-stage runs. The shipped migration
 (`migrations/1.2.0.lua`) resets recipes and technologies on existing saves, so
 unlock state lines up again after an update.
 
@@ -53,6 +56,7 @@ unlock state lines up again after an update.
 |---|---|---|
 | High-speed trains do not need fuel (`highspeedtrain-no-fuel`) | off | All four high-speed locomotives get a `void` energy source and run without fuel. Vanilla locomotives are untouched. |
 | Free recipes and instant unlocks (`highspeedtrain-free-mode`) | off | All nine HighSpeedTrain recipes become ingredient-free and are enabled right away; the nine technologies are hidden, lose prerequisites and unlock effects, and shrink to a single automation pack in 1 s. |
+| Highspeed Mk4-Tempo-Prozent (`highspeedtrain-mk4-speed-percent`) | 100 % | Scales only the Mk4 locomotive's `max_speed`, to 20–100 % of the 50 reference value (40 % → 20, 20 % → 10). `max_power`, braking force and weight are untouched, and the Mk1–Mk3 ramp (4/5/7) keeps its shape. Purpose: the Mk4 outlier at the top of the ramp can be dialled back deliberately instead of being hard-coded. |
 
 ## Research and crafting (default mode)
 

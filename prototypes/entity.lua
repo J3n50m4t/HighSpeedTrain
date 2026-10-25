@@ -1,5 +1,11 @@
 local no_fuel = settings.startup["highspeedtrain-no-fuel"] and settings.startup["highspeedtrain-no-fuel"].value
 
+-- Mk4-Tempo in Prozent des Referenzwerts (50 = 100 %): bewusster Regler, um den
+-- Mk4-Ausreisser nach oben zu entschaerfen. Skaliert NUR max_speed von Mk4.
+local mk4_speed_setting = settings.startup["highspeedtrain-mk4-speed-percent"]
+local mk4_speed_percent = (mk4_speed_setting and mk4_speed_setting.value) or 100
+local MK4_MAX_SPEED_REFERENCE = 50.0
+
 local function apply_energy_source(prototype)
   if no_fuel then
     prototype.energy_source = { type = "void" }
@@ -69,7 +75,7 @@ highspeed_locomk4.icon = "__base__/graphics/icons/locomotive.png"
 highspeed_locomk4.icon_size = 32
 highspeed_locomk4.color = {r = 0.85, g = 0.10, b = 0.10, a = 0.5}
 highspeed_locomk4.weight = 1000
-highspeed_locomk4.max_speed = 50
+highspeed_locomk4.max_speed = MK4_MAX_SPEED_REFERENCE * mk4_speed_percent / 100
 highspeed_locomk4.quality_affects_max_speed = true
 highspeed_locomk4.max_power = "7000kW"
 highspeed_locomk4.reversing_power_modifier = 0.5 --no effect on automatic trains
