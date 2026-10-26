@@ -1,0 +1,28 @@
+name: Smoke test
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    name: Headless mod load
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Install LuaJIT, zip and luacheck
+        run: |
+          sudo apt-get update
+          # Ubuntu 24.04 (ubuntu-latest) hat kein luacheck-Apt-Paket mehr;
+          # daher luarocks-Nachinstallation (luacheck ist reines Lua).
+          sudo apt-get install -y luajit zip luarocks
+          sudo luarocks install luacheck
+      - name: Luacheck
+        run: luacheck .
+      - name: Run smoke test
+        run: ./scripts/smoke-test.sh

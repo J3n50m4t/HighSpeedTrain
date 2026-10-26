@@ -1,17 +1,74 @@
 local no_fuel = settings.startup["highspeedtrain-no-fuel"] and settings.startup["highspeedtrain-no-fuel"].value
 
+-- Mk4-Tempo in Prozent des Referenzwerts (50 = 100 %): bewusster Regler, um den
+-- Mk4-Ausreisser nach oben zu entschaerfen. Skaliert NUR max_speed von Mk4.
+local mk4_speed_setting = settings.startup["highspeedtrain-mk4-speed-percent"]
+local mk4_speed_percent = (mk4_speed_setting and mk4_speed_setting.value) or 100
+local MK4_MAX_SPEED_REFERENCE = 50.0
+
 local function apply_energy_source(prototype)
   if no_fuel then
     prototype.energy_source = { type = "void" }
   end
 end
 
+-- Akustik pro Mk-Stufe: ausschliesslich das Vanilla-Soundmaterial der locomotive, so
+-- wie der base-Dump es in working_sound.main_sounds hinterlegt (Index 1
+-- train-engine-driving.ogg, Index 2 train-engine.ogg = Idle-Droehnlayer, Index 3
+-- train-wheels.ogg). Die Mod nennt keine eigene Audiodatei und setzt nur Felder, die
+-- der base-Dump im Vanilla-Soundmuster auch wirklich zeigt:
+-- * Subset der main_sounds: Mk2/Mk4 ohne Idle-Droehnlayer (klingt hoeher/motorischer),
+--   Mk3 mit allen drei Layern und max_sounds_per_prototype 3 statt 2 (base nutzt fuer
+--   dieses Feld 1..20) - die Layer hoeren sich gleichzeitig an, also druckvoller.
+-- * activity_to_speed_modifiers.maximum: Vanilla-Feld desselben Sounds, Dump-Werte
+--   1.15/1.2/1.4. Schnellere Loks pitchen Antriebs- und Radgeraeusch mit der Aktivitaet
+--   weiter hoch. Kein erfundenes Pitch-Feld.
+-- * audible_distance_modifier am Einzel-Sound: Feld der SoundPrototype mit Vanilla-
+--   Werten 0.2..6.25 (innerhalb von working_sound nutzt base 0.2..0.8, lautere
+--   Effekte wie Explosionen 3.8). Wir nehmen ausschliesslich im base-Dump belegte
+--   Werte: 1.45 (Mk2) / 1.7 (Mk3) / 2 (Mk4) - die Lok ist hoeher stufig frueher/laenger
+--   hoerenbar. apparent_volume, audible_distance, play_type und pitch-Felder kommen im
+--   gesamten base-Dump nirgends vor und bleiben deshalb ungenutzt.
+-- Mk1 bleibt unangetastet und verhaelt sich akustisch exakt wie die Vanilla-Lok.
+local IDLE_SOUND_INDEX = 2 -- main_sounds[2] = __base__/sound/train-engine.ogg
+
+local function drop_idle_sound_layer(prototype)
+  table.remove(prototype.working_sound.main_sounds, IDLE_SOUND_INDEX)
+end
+
+local function set_sound_audible_distance(prototype, modifier)
+  for _, entry in ipairs(prototype.working_sound.main_sounds) do
+    entry.sound.audible_distance_modifier = modifier
+  end
+end
+
+-- Wirkt nur auf Layer, die diesen Vanilla-Block bereits haben (drive + wheels).
+local function set_speed_pitch_ceiling(prototype, maximum)
+  for _, entry in ipairs(prototype.working_sound.main_sounds) do
+    if entry.activity_to_speed_modifiers then
+      entry.activity_to_speed_modifiers.maximum = maximum
+    end
+  end
+end
+
+-- Quality-Skalierung: base setzt quality_affects_* erst in data-updates.lua, also
+-- NACH unserer data.lua - copyPrototype kann die Vanilla-Flags nicht erben, unsere
+-- Kopien haetten ohne diese Zuweisungen nil und Quality wirke nicht. Wir setzen pro
+-- Proto ausschliesslich das Feld, das das Vanilla-Vorbild laut base-Dump hat:
+-- locomotive -> max_speed, cargo-wagon -> inventory_size, fluid-wagon -> capacity.
+-- artillery-wagon hat in Vanilla kein quality_affects_*-Feld, bleibt deshalb leer.
+--
+-- Farbcodierung pro Mk-Stufe: color (Fahrzeug auf der Karte) ist pro Stufe eindeutig
+-- und gleich der RGB des Icon-Tints in item.lua/recipe.lua (dort alpha 1.0):
+-- Mk1 Blau, Mk2 Cyan, Mk3 Orange, Mk4 Rot. Auf der Karte unterscheidbar, dezent genug
+-- fuer den Vanilla-Kartenhintergrund. Wagen bleiben bei Vanilla-color (nur Icons getaenmt).
+
 local highspeed_loco = copyPrototype("locomotive", "locomotive", "highspeed-locomotive")
 highspeed_loco.icon = "__base__/graphics/icons/locomotive.png"
-highspeed_loco.icon_size = 32
 highspeed_loco.color = {r = 0.10, g = 0.19, b = 0.80, a = 0.5}
 highspeed_loco.weight = 1000
 highspeed_loco.max_speed = 4 --860.km/h
+highspeed_loco.quality_affects_max_speed = true
 highspeed_loco.max_power = "4000kW"
 highspeed_loco.reversing_power_modifier = 0.5 --no effect on automatic trains
 highspeed_loco.braking_force = 90
@@ -19,14 +76,16 @@ highspeed_loco.friction_force = 1
 highspeed_loco.air_resistance = 0.0005
 highspeed_loco.max_health = 800
 apply_energy_source(highspeed_loco)
+-- working_sound hier bewusst NICHT gesetzt: Mk1 erbt das Vanilla-working_sound der
+-- locomotive unveraendert (3 Layer, max_sounds_per_prototype 2).
 
 
 local highspeed_locomk2 = copyPrototype("locomotive", "locomotive", "highspeed-locomotiveMK2")
 highspeed_locomk2.icon = "__base__/graphics/icons/locomotive.png"
-highspeed_locomk2.icon_size = 32
-highspeed_locomk2.color = {r = 0.10, g = 0.19, b = 0.80, a = 0.5}
+highspeed_locomk2.color = {r = 0.05, g = 0.55, b = 0.75, a = 0.5}
 highspeed_locomk2.weight = 1000
 highspeed_locomk2.max_speed = 5 --860.km/h
+highspeed_locomk2.quality_affects_max_speed = true
 highspeed_locomk2.max_power = "5000kW"
 highspeed_locomk2.reversing_power_modifier = 0.5 --no effect on automatic trains
 highspeed_locomk2.braking_force = 110
@@ -34,13 +93,17 @@ highspeed_locomk2.friction_force = 1
 highspeed_locomk2.air_resistance = 0.0005
 highspeed_locomk2.max_health = 800
 apply_energy_source(highspeed_locomk2)
+-- Akustik Mk2: Idle-Droehnlayer (train-engine.ogg) raus, Antriebs- und Radgeraeusch
+-- dafuer 1.45x weiter hoerenbar -> schlanke, naeher am Vanilla-Brummen liegende Variante.
+drop_idle_sound_layer(highspeed_locomk2)
+set_sound_audible_distance(highspeed_locomk2, 1.45)
 
 local highspeed_locomk3 = copyPrototype("locomotive", "locomotive", "highspeed-locomotiveMK3")
 highspeed_locomk3.icon = "__base__/graphics/icons/locomotive.png"
-highspeed_locomk3.icon_size = 32
-highspeed_locomk3.color = {r = 0.10, g = 0.19, b = 0.80, a = 0.5}
+highspeed_locomk3.color = {r = 0.85, g = 0.45, b = 0.10, a = 0.5}
 highspeed_locomk3.weight = 1000
 highspeed_locomk3.max_speed = 7 --860.km/h
+highspeed_locomk3.quality_affects_max_speed = true
 highspeed_locomk3.max_power = "7000kW"
 highspeed_locomk3.reversing_power_modifier = 0.5 --no effect on automatic trains
 highspeed_locomk3.braking_force = 130
@@ -48,13 +111,20 @@ highspeed_locomk3.friction_force = 1
 highspeed_locomk3.air_resistance = 0.0005
 highspeed_locomk3.max_health = 800
 apply_energy_source(highspeed_locomk3)
+-- Akustik Mk3: alle drei Vanilla-Layer bleiben, aber max_sounds_per_prototype 3 statt 2
+-- laesst sie gleichzeitig spielen (druckvoller); das Antriebsgeraeusch pitcht mit der
+-- Aktivitaet bis 1.2 statt 1.15 (Radgeraeusch hat in Vanilla bereits 1.2) und der Sound
+-- ist 1.7x weiter hoerenbar.
+highspeed_locomk3.working_sound.max_sounds_per_prototype = 3
+set_sound_audible_distance(highspeed_locomk3, 1.7)
+set_speed_pitch_ceiling(highspeed_locomk3, 1.2)
 
 local highspeed_locomk4 = copyPrototype("locomotive", "locomotive", "highspeed-locomotiveMK4")
 highspeed_locomk4.icon = "__base__/graphics/icons/locomotive.png"
-highspeed_locomk4.icon_size = 32
-highspeed_locomk4.color = {r = 0.10, g = 0.19, b = 0.80, a = 0.5}
+highspeed_locomk4.color = {r = 0.85, g = 0.10, b = 0.10, a = 0.5}
 highspeed_locomk4.weight = 1000
-highspeed_locomk4.max_speed = 50
+highspeed_locomk4.max_speed = MK4_MAX_SPEED_REFERENCE * mk4_speed_percent / 100
+highspeed_locomk4.quality_affects_max_speed = true
 highspeed_locomk4.max_power = "7000kW"
 highspeed_locomk4.reversing_power_modifier = 0.5 --no effect on automatic trains
 highspeed_locomk4.braking_force = 250
@@ -62,43 +132,139 @@ highspeed_locomk4.friction_force = 1
 highspeed_locomk4.air_resistance = 0.0005
 highspeed_locomk4.max_health = 800
 apply_energy_source(highspeed_locomk4)
+-- Akustik Mk4 (50 m/s Referenztempo): Idle-Droehnen raus, dafuer Antrieb+Raeder bis 1.4
+-- hochgepitcht und 2x hoerenbar - die markanteste Stufe, aber weiterhin reines
+-- Vanilla-Soundmaterial ohne eigene Audiodatei.
+drop_idle_sound_layer(highspeed_locomk4)
+set_speed_pitch_ceiling(highspeed_locomk4, 1.4)
+set_sound_audible_distance(highspeed_locomk4, 2)
 
 local highspeed_cargo = copyPrototype("cargo-wagon", "cargo-wagon", "highspeed-cargo-wagon")
-highspeed_cargo.max_speed = 10
 highspeed_cargo.braking_force = 50
 highspeed_cargo.icon = "__base__/graphics/icons/cargo-wagon.png"
 highspeed_cargo.inventory_size = 100;
+highspeed_cargo.quality_affects_inventory_size = true
 highspeed_cargo.max_health = 800
 
 local highspeed_cargomk2 = copyPrototype("cargo-wagon", "cargo-wagon", "highspeed-cargo-wagonMK2")
-highspeed_cargomk2.max_speed = 50
 highspeed_cargomk2.braking_force = 250
 highspeed_cargomk2.icon = "__base__/graphics/icons/cargo-wagon.png"
 highspeed_cargomk2.inventory_size = 100;
+highspeed_cargomk2.quality_affects_inventory_size = true
 highspeed_cargomk2.max_health = 800
 
+-- Mk3: doppeltes Inventar (200 = 5x Vanilla-40). Bremskraft wie Mk2 (250), weil Wagen
+-- in 2.1 keinen max_speed mehr haben. Auch hier setzt die Mod den
+-- quality_affects_inventory_size-Flag selbst (base setzt ihn erst in data-updates.lua).
+local highspeed_cargomk3 = copyPrototype("cargo-wagon", "cargo-wagon", "highspeed-cargo-wagonMK3")
+highspeed_cargomk3.braking_force = 250
+highspeed_cargomk3.icon = "__base__/graphics/icons/cargo-wagon.png"
+highspeed_cargomk3.inventory_size = 200
+highspeed_cargomk3.quality_affects_inventory_size = true
+highspeed_cargomk3.max_health = 800
+
 local highspeed_fluid = copyPrototype("fluid-wagon", "fluid-wagon", "highspeed-fluid-wagon")
-highspeed_fluid.total_capacity = 37000 * 3
+highspeed_fluid.capacity = 37000 * 3
+highspeed_fluid.quality_affects_capacity = true
 highspeed_fluid.weight = 2500
-highspeed_fluid.max_speed = 10
 highspeed_fluid.braking_force = 50
 highspeed_fluid.icon = "__base__/graphics/icons/fluid-wagon.png";
 highspeed_fluid.max_health = 800
 
 local highspeed_fluidMK2 = copyPrototype("fluid-wagon", "fluid-wagon", "highspeed-fluid-wagonMK2")
-highspeed_fluidMK2.total_capacity = 37000 * 3
+highspeed_fluidMK2.capacity = 37000 * 3
+highspeed_fluidMK2.quality_affects_capacity = true
 highspeed_fluidMK2.weight = 2500
-highspeed_fluidMK2.max_speed = 50
 highspeed_fluidMK2.braking_force = 250
 highspeed_fluidMK2.icon = "__base__/graphics/icons/fluid-wagon.png";
 highspeed_fluidMK2.max_health = 800
 
+-- Mk3: doppelte Kapazitaet (222000 = 2x der 111000 von Mk1/Mk2, 4.44x Vanilla-50000).
+-- weight/braking_force/max_health wie Mk2 (2500/250/800), weil Wagen in 2.1 keinen
+-- max_speed mehr haben. Auch hier setzt die Mod den quality_affects_capacity-Flag
+-- selbst (base setzt ihn erst in data-updates.lua, nach unserer data.lua).
+local highspeed_fluidMK3 = copyPrototype("fluid-wagon", "fluid-wagon", "highspeed-fluid-wagonMK3")
+highspeed_fluidMK3.capacity = 37000 * 6 -- 222000
+highspeed_fluidMK3.quality_affects_capacity = true
+highspeed_fluidMK3.weight = 2500
+highspeed_fluidMK3.braking_force = 250
+highspeed_fluidMK3.icon = "__base__/graphics/icons/fluid-wagon.png";
+highspeed_fluidMK3.max_health = 800
+
 local highspeed_artillery = copyPrototype("artillery-wagon", "artillery-wagon", "highspeed-artillery-wagon")
-highspeed_artillery.max_speed = 10
 highspeed_artillery.braking_force = 50
 highspeed_artillery.icon = "__base__/graphics/icons/artillery-wagon.png"
 highspeed_artillery.max_health = 1000
+-- bewusst kein quality_affects_*: das Vanilla-Vorbild (artillery-wagon) hat keins
 
+-- Artillerie Mk2: das Feld-Wissen stammt aus dem Base-Dump (Factorio 2.1.23), nicht aus
+-- der Dokumentation. Was an der Wagen-ENTITAET schussrelevant ist, ist nur: gun (Name des
+-- Geschuetz-Protos), turret_rotation_speed 0.001, turn_after_shooting_cooldown 60,
+-- manual_range_modifier 2.5, ammo_stack_limit 100, inventory_size 1. Kein
+-- attack_parameters/range/reload mehr am Waggon selbst. Fuer turret_rotation_speed,
+-- manual_range_modifier und turn_after_shooting_cooldown zeigt der Dump an Waggon UND
+-- artillery-turret ein und denselben Vanilla-Wert - es gibt dort keinen anderen
+-- Vanilla-Wert, auf den wir erhoehen koennen, also bleiben die drei in Ruhe.
+-- Der Knopf sitzt im gun-Proto (Raw-Kategorie gun) 'artillery-wagon-cannon':
+-- attack_parameters.cooldown 200 = Ticks zwischen den Schuessen (Vanilla-Guns im Dump
+-- liegen bei 1..200), range 224, min_range 32, ammo_category 'artillery-shell'. Dass
+-- genau diese Achse das Spiel bewegt, belegt base selbst: Vanilla-Technik
+-- 'artillery-shell-speed-1' hat den effect-Typ 'gun-speed' auf ammo_category
+-- 'artillery-shell'. Mk2 bekommt ein eigenes Geschuetz mit cooldown 150 (25 % kuerzer als
+-- die 200 Ticks); range/min_range bleiben unangetastet, dafuer unterhaelt base mit
+-- 'artillery-shell-range-1' (effect-Typ 'artillery-range') eine eigene Forschungslinie.
+local highspeed_artillery_cannonmk2 =
+  copyPrototype("gun", "artillery-wagon-cannon", "highspeed-artillery-wagon-cannonMK2")
+highspeed_artillery_cannonmk2.attack_parameters.cooldown = 150
+
+-- Mk2-Wagen wie ueblich eine Kopie des Vanilla-Vorbilds: Bremskraft 250 wie die anderen
+-- Mk2-Stufen, max_health 1000 wie der Mk1-Artilleriewagen, weight 4000 und color bleiben
+-- Vanilla (Wagen werden nur ueber die Icon-Tints unterschieden). Neu gegenueber Mk1 ist
+-- das eigene schnellere Geschuetz. Wieder kein quality_affects_*: der ganze Dump kennt
+-- genau drei dieser Felder (locomotive/quality_affects_max_speed, cargo-wagon/
+-- quality_affects_inventory_size, fluid-wagon/quality_affects_capacity) - an
+-- artillery-wagon, gun- und ammo-Protos gibt es keins, ein erfundenes Flag wuerde der
+-- Loader stillschweigend ignorieren.
+local highspeed_artillerymk2 = copyPrototype("artillery-wagon", "artillery-wagon", "highspeed-artillery-wagonMK2")
+highspeed_artillerymk2.braking_force = 250
+highspeed_artillerymk2.icon = "__base__/graphics/icons/artillery-wagon.png"
+highspeed_artillerymk2.max_health = 1000
+highspeed_artillerymk2.gun = highspeed_artillery_cannonmk2.name
+
+-- Munition-Schaden: das ammo-Item 'artillery-shell' hat im Dump KEIN damage-Feld (auch
+-- kein anderes ammo-Proto hat eins). Der Schaden steckt im Projectile-Proto
+-- 'artillery-projectile' (Raw-Kategorie artillery-projectile): zwei damage-Knoten im
+-- Wirkungsradius 4 - 1000 physikalisch + 1000 Explosion. Die Mk2-Granate bekommt eine
+-- Kopie dieses Projektils mit dem Doppelten dieser beiden Dump-Werte; welche Granate
+-- welches Projektil abfeuert, entscheidet das ammo-Item in prototypes/item.lua.
+-- Verstarkung ueber alle damage-Knoten im action-Baum (final_action enthaelt laut Dump
+-- keinen damage-Knoten und bleibt unberoehrt). Erwartet werden wie im Dump gesehen genau
+-- zwei Fundstellen; weicht die Vanilla-Struktur davon ab, bricht die Datenstufe mit
+-- Fehler laut ab, statt stillschweigend eine unveraenderte Granate auszuliefern.
+local function scale_damage_amounts(root, factor)
+  local hits = 0
+  local function walk(node)
+    for _, child in pairs(node) do
+      if type(child) == "table" then
+        if child.type == "damage" and type(child.damage) == "table"
+            and type(child.damage.amount) == "number" then
+          child.damage.amount = child.damage.amount * factor
+          hits = hits + 1
+        end
+        walk(child)
+      end
+    end
+  end
+  walk(root)
+  return hits
+end
+
+local highspeed_artillery_projectilemk2 =
+  copyPrototype("artillery-projectile", "artillery-projectile", "highspeed-artillery-projectile-mk2")
+if scale_damage_amounts(highspeed_artillery_projectilemk2.action, 2) ~= 2 then
+  error("highspeed-artillery-projectile-mk2: erwartet genau 2 damage-Knoten im " ..
+    "Vanilla-artillery-projectile (1000 physikalisch + 1000 Explosion)")
+end
 
 data:extend({
   highspeed_loco,
@@ -107,7 +273,12 @@ data:extend({
   highspeed_locomk4,
   highspeed_cargo,
   highspeed_cargomk2,
+  highspeed_cargomk3,
   highspeed_fluid,
   highspeed_fluidMK2,
-  highspeed_artillery
+  highspeed_fluidMK3,
+  highspeed_artillery,
+  highspeed_artillerymk2,
+  highspeed_artillery_cannonmk2,
+  highspeed_artillery_projectilemk2
 })
