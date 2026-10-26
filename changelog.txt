@@ -1,4 +1,27 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.0.0
+Date: 2026-10-26
+  Features:
+    - Artillerie-Wagen Mk2 mit eigenem Geschuetz und Mk2-Granate
+    - Cargo-Wagen Mk3 mit doppeltem Inventar und eigener Tech-Stufe
+    - control.lua mit Warnung bei gemischten Lok-Stufen und /hst-info
+    - Fluid-Wagen Mk3 mit doppelter Kapazitaet und eigener Tech-Stufe
+    - Quality-Skalierung aller Highspeed-Fahrzeuge aktiviert (Flags vor data-updates-Noetigkeit)
+    - Start-up-Regler für Mk4-Tempo in Prozent (20–100 %, Standard 100 %)
+  Gui:
+    - deutliche Farbcodierung pro Mk-Stufe (Fahrzeugfarbe = Icon-Ton)
+    - eigene Icons für alle Highspeed-Technologien (Stufen-Farben)
+  Compatibility:
+    - Fluid-Wagen-Kapazitaet 50.000 -> 111.000 wirkt auf Bestands-Saves
+  Bugfixes:
+    - [balance] Tankwagen-Kapazität auf 2.1-Feld capacity umgestellt (total_capacity war toter Code)
+    - icon_size der Lok-Entities entfernt (Vanilla-Default 64 auf 120x64-PNG)
+    - [release] eigene releaseRules ersetzen die Default-Regeln — breaking/revert explizit nachtragen
+    - [release] git archive schuetzt Nicht-Mod-Dateien per export-ignore aus
+    - Versions-Stempel aus script.active_mods statt hartkodiert (Release-driftfrei)
+  Sounds:
+    - working_sounds pro Lok-Stufe abgestuft (Vanilla-Material)
+---------------------------------------------------------------------------------------------------
 Version: 1.4.0
 Date: 2026-07-15
   Features:
